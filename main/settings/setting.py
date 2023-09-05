@@ -12,4 +12,4 @@ logger = logging.getLogger(__name__)
 
 def main():
     
-    from main import connect
+    from main import auth
