@@ -24,19 +24,15 @@ class Requests_automat:
             async with session.get(
                 url = self.url + self.path,
                 headers = {'Content-Type': 'application/json'},
-                json = {
-                    'type': self.type,
-                },
                 params = {
+                    'id': '1',
+                    'type': self.type,
                     'action': self.action_automat,
-                    'time_zone': self.time_zone,
-                    '_dc': datetime.now().strftime('%Y%M%H%M%S%mS'),
-                    'Host': 'erp.ephor.online',
-                    'Connection': 'keep-alive'
+                    '_dc': datetime.now().strftime('%Y%M%H%M%S%mS')
                 }
             ) as respond:
                 return await respond.json(content_type = 'text/html')
         
 
 request = asyncio.run(Requests_automat().request())
-
+print(request)

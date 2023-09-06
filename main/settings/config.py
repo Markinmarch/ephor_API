@@ -10,12 +10,11 @@ LOGIN = os.getenv('LOGIN', '')
 
 PASSWORD = os.getenv('PASSWORD', '')
 
-URL = 'https://erp.ephor.online/'
+URL = 'https://erp.ephor.online'
 
 CONNECTION = 'keep-alive'
 
 PATH = {
-    'auth': 'api/2.0/Auth.php',
-    'automat': 'api/2.0/automat/Automat.php'
+    'auth': '/api/2.0/Auth.php',
+    'automat': '/api/2.0/automat/Automat.php'
 }
-

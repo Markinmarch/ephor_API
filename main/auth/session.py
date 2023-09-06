@@ -1,4 +1,4 @@
-import aiohttp
+from aiohttp import ClientSession
 import asyncio
 from datetime import datetime
 import requests
@@ -19,13 +19,14 @@ class Session:
         self.path = PATH['auth']
         self.time_zone = 3,
         self.action_in = 'Login',
-        self.action_out = 'Logout'
+        self.action_out = 'Logout',
+        self.id_request = datetime.now().strftime('%M%H%M%S%f')
 
+    @property
     async def connect(self):
-        async with aiohttp.ClientSession() as session:
+        async with ClientSession(base_url = self.url) as session:
             async with session.post(
-                url = self.url + self.path,
-                headers = {'Content-Type': 'application/json', 'Host': 'erp.ephor.online', 'Connection': 'keep-alive'},
+                url = self.path,
                 json = {
                     'login': self.login,
                     'password': self.password,
@@ -33,24 +34,26 @@ class Session:
                 },
                 params = {
                     'action': self.action_in,
-                    '_dc': datetime.now().strftime('%Y%M%H%M%S%f')
-                }
+                    '_dc': self.id_request
+                },
+                headers = {'Content-Type': 'application/json'}
             ) as respond:
                 return await respond.json(content_type = 'text/html')
             
+    @property        
     async def disconnect(self):
-        async with aiohttp.ClientSession() as session:
+        async with ClientSession(self.url) as session:
             async with session.post(
-                url = URL+PATH['auth'],
+                url = self.path,
                 headers = {'Content-Type': 'application/json'},
                 json = {
                     'login': self.login,
-                    'password': self.password
+                    'password': self.password,
+                    'time_zone': self.time_zone,
                 },
                 params = {
                     'action': self.action_out,
-                    'time_zone': self.time_zone,
-                    '_dc': datetime.now().strftime('%Y%M%H%M%S%mS')
+                    '_dc': self.id_request
                 }
             ) as respond:
                 return await respond.json(content_type = 'text/html')
@@ -59,5 +62,7 @@ session = Session(
     login = LOGIN,
     password = PASSWORD
 )
-conn = asyncio.run(session.connect())
-disconn = asyncio.run(session.disconnect())
+conn = asyncio.run(session.connect)
+disconn = asyncio.run(session.disconnect)
+
+print(conn, disconn)
