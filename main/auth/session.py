@@ -1,7 +1,7 @@
 from aiohttp import ClientSession
-import asyncio
 from datetime import datetime
-import requests
+import asyncio
+
 
 from main.settings.config import URL, PATH, LOGIN, PASSWORD
 
@@ -34,7 +34,9 @@ class Session:
                 },
                 params = {
                     'action': self.action_in,
-                    '_dc': self.id_request
+                    '_dc': self.id_request,
+                    'start': 0,
+                    'limit': 25
                 },
                 headers = {'Content-Type': 'application/json'}
             ) as respond:
@@ -65,4 +67,4 @@ session = Session(
 conn = asyncio.run(session.connect)
 disconn = asyncio.run(session.disconnect)
 
-print(conn, disconn)
+print(conn)
