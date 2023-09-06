@@ -3,7 +3,7 @@ from aiogram import types
 
 from telegram_bot.settings.setting import dp
 from telegram_bot.utils.keyboards.reply_keyboard import canseled
-from telegram_bot.utils.content.text_content import GIVE_NAME
+from telegram_bot.utils.text_content import GIVE_NAME
 from telegram_bot.utils.state import AddUser
 
 

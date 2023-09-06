@@ -5,7 +5,7 @@ import logging
 from telegram_bot.settings.setting import dp
 from telegram_bot.utils.keyboards.inline_keyboard import delete_acc_button
 from telegram_bot.sql_db.users_db import users
-from telegram_bot.utils.content.text_content import DELETE_ACCOUNT_MESSAGE
+from telegram_bot.utils.text_content import DELETE_ACCOUNT_MESSAGE
 
 
 @dp.message_handler(commands = ['delete_account'])

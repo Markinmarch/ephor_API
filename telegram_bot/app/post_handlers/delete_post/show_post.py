@@ -6,7 +6,7 @@ from aiogram.utils.exceptions import MessageToDeleteNotFound
 from telegram_bot.settings.setting import dp
 from telegram_bot.settings.config import CHANNEL_URL
 from telegram_bot.sql_db.posts_db import posts
-from telegram_bot.utils.content.text_content import FILTERS_MESSAGE
+from telegram_bot.utils.text_content import FILTERS_MESSAGE
 from telegram_bot.utils.keyboards.inline_keyboard import delete_post_button
 from telegram_bot.utils.state import DeletePost
 

@@ -7,7 +7,7 @@ from telegram_bot.settings.setting import dp
 from telegram_bot.settings.config import TIMEOUT_MESSAGES
 from telegram_bot.utils.state import AddPost
 from telegram_bot.utils.keyboards.reply_keyboard import canseled
-from telegram_bot.utils.content.text_content import INTERRUPTION_MESSAGE, CREATE_POST_MESSAGE
+from telegram_bot.utils.text_content import INTERRUPTION_MESSAGE, CREATE_POST_MESSAGE
 
 
 @dp.message_handler(state = AddPost.direction)

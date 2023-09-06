@@ -3,7 +3,7 @@ from aiogram import types
 
 from telegram_bot.settings.setting import dp
 from telegram_bot.settings.config import CHANNEL_URL
-from telegram_bot.utils.content.text_content import FEEDBACK, ALREADY_RESPONDED_MESSAGE, FEEDBACK_SEND
+from telegram_bot.utils.text_content import FEEDBACK, ALREADY_RESPONDED_MESSAGE, FEEDBACK_SEND
 from telegram_bot.sql_db.posts_db import posts
 from telegram_bot.sql_db.responders_db import responders
 

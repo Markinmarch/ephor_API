@@ -2,7 +2,7 @@ from aiogram import types
 
 
 from telegram_bot.settings.setting import dp
-from telegram_bot.utils.content.text_content import BAD_WORDS, FILTERS_MESSAGE
+from telegram_bot.utils.text_content import BAD_WORDS, FILTERS_MESSAGE
 from telegram_bot.utils.state import AddPost, AddUser
 
 @dp.message_handler(

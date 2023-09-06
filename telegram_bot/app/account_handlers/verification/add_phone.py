@@ -7,7 +7,7 @@ from telegram_bot.settings.setting import dp
 from telegram_bot.sql_db.users_db import users
 from telegram_bot.utils.state import AddUser
 from telegram_bot.utils.commands import set_commands_for_users
-from telegram_bot.utils.content.text_content import VERIFICATION
+from telegram_bot.utils.text_content import VERIFICATION
 
 
 @dp.message_handler(state = AddUser.phone, content_types = types.ContentType.CONTACT)

@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from telegram_bot.settings.setting import dp
 from telegram_bot.utils.state import AddUser
 from telegram_bot.utils.keyboards.reply_keyboard import get_phone_user
-from telegram_bot.utils.content.text_content import GIVE_PHONE
+from telegram_bot.utils.text_content import GIVE_PHONE
 
 
 @dp.message_handler(state = AddUser.name)

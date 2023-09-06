@@ -4,7 +4,7 @@ from aiogram import types
 from telegram_bot.settings.setting import dp
 from telegram_bot.utils.keyboards.reply_keyboard import direction_detection_buttons
 from telegram_bot.utils.state import AddPost
-from telegram_bot.utils.content.text_content import FILTERS_MESSAGE
+from telegram_bot.utils.text_content import FILTERS_MESSAGE
 
     
 @dp.message_handler(

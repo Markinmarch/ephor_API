@@ -7,7 +7,7 @@ from telegram_bot.settings.config import CHANNEL_ID
 from telegram_bot.sql_db.posts_db import posts
 from telegram_bot.utils.state import AddPost
 from telegram_bot.utils.keyboards.inline_keyboard import under_post_buttons
-from telegram_bot.utils.content.text_content import POST_CONTENT, PUBLICATION_ACCOUNCEMENT
+from telegram_bot.utils.text_content import POST_CONTENT, PUBLICATION_ACCOUNCEMENT
 
 
 @dp.message_handler(state = AddPost.photo, content_types = types.ContentType.ANY)

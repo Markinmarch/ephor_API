@@ -6,7 +6,7 @@ from aiogram.dispatcher import FSMContext
 from telegram_bot.settings.setting import dp
 from telegram_bot.sql_db.posts_db import posts
 from telegram_bot.settings.config import TIMEOUT_MESSAGES
-from telegram_bot.utils.content.text_content import CHECK_POSTS, NONE_POSTS, INTERRUPTION_MESSAGE
+from telegram_bot.utils.text_content import CHECK_POSTS, NONE_POSTS, INTERRUPTION_MESSAGE
 from telegram_bot.utils.state import DeletePost
 
 

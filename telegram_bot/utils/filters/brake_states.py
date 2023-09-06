@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 
 from telegram_bot.settings.setting import dp
-from telegram_bot.utils.content.text_content import FILTERS_MESSAGE
+from telegram_bot.utils.text_content import FILTERS_MESSAGE
 from telegram_bot.utils.state import AddPost, AddUser, DeletePost
 
 @dp.message_handler(

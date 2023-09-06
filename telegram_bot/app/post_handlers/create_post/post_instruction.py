@@ -6,7 +6,7 @@ from telegram_bot.settings.setting import dp
 from telegram_bot.settings.config import COUNT_LIMIT_POSTS, PAUSE_CREATE_POSTS
 from telegram_bot.sql_db.users_db import users
 from telegram_bot.sql_db.posts_db import posts
-from telegram_bot.utils.content.text_content import POST_INSTRUCTION, WAITING_MESSAGE, UNREGISTRED_USER, LIMIT_WARNING_PUBLICATION_MESSAGE
+from telegram_bot.utils.text_content import POST_INSTRUCTION, WAITING_MESSAGE, UNREGISTRED_USER, LIMIT_WARNING_PUBLICATION_MESSAGE
 from telegram_bot.utils.keyboards.inline_keyboard import continue_filling_button, start_registration_button
 
 

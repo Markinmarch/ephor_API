@@ -6,7 +6,7 @@ from telegram_bot.settings.setting import dp
 from telegram_bot.settings.config import CHANNEL_ID
 from telegram_bot.sql_db.posts_db import posts
 from telegram_bot.utils.state import DeletePost
-from telegram_bot.utils.content.text_content import DELETE_POST_MESSAGE
+from telegram_bot.utils.text_content import DELETE_POST_MESSAGE
 
 
 @dp.callback_query_handler(text = 'delete_post', state = DeletePost.num_post)
