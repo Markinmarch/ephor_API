@@ -3,7 +3,7 @@ from aiogram import types
 
 from telegram_bot.settings.setting import dp
 from telegram_bot.utils.keyboards.reply_keyboard import get_phone_user
-from telegram_bot.utils.content.text_content import REGISTRATION_MESSAGE
+from telegram_bot.utils.content.text_content import GIVE_PHONE
 
 
 @dp.callback_query_handler(text = 'give_phone')
@@ -16,6 +16,6 @@ async def add_gender__cmd_phone(callback: types.CallbackQuery) -> None:
         :message: тип объкета представления.
     '''
     await callback.message.answer(
-        text = REGISTRATION_MESSAGE,
+        text = GIVE_PHONE,
         reply_markup = get_phone_user
     )

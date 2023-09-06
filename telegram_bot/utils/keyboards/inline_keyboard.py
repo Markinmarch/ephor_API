@@ -13,12 +13,12 @@ agree_button = InlineKeyboardMarkup(
     ]
 )
 
-continue_filling_button = InlineKeyboardMarkup(
+add_name = InlineKeyboardMarkup(
     inline_keyboard = [
         [
             InlineKeyboardButton(
-                text = '📝 Продолжить',
-                callback_data = 'user_informed'
+                text = 'Ввести имя и фамилию',
+                callback_data = 'add_name'
             )
         ]
     ]
