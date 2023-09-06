@@ -21,14 +21,14 @@ async def user_verification(message: types.Message) -> None:
         :message: тип объкета представления.
     '''
     if users.checking_users(message.from_user.id) == False:
-        await set_commands_for_new_user(bot = message.bot)
+        await set_commands_for_users(bot = message.bot)
         await message.answer(
-            text = UNREGISTRED_USER.format(message.from_user.first_name),
+            text = 'Пройдите верификацию для дальнейшего взаимодействия с ботом',
             reply_markup = start_registration_button
         )
     else:
         await set_commands_for_users(bot = message.bot)
         await message.answer(
-            text = IF_USER_HAVE_ACCOUNT +'\n'+ UPDATE_MESSAGE,
+            text = UPDATE_MESSAGE,
         )
         logging.info(f'User {message.from_user.id} authorization')

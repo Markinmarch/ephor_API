@@ -28,8 +28,6 @@ class Bot_tables_DB:
             CREATE TABLE if NOT EXISTS users(
                 id INTEGER PRIMARY KEY,
                 user_name TEXT NOT NULL,
-                user_age INTEGER NOT NULL,
-                user_gender INTEGER NOT NULL,
                 user_phone INTEGER NOT NULL
             );
             '''
@@ -37,49 +35,49 @@ class Bot_tables_DB:
         self.conn.commit()
         logging.info('--- Table "USERS" has been created ---')
 
-    def create_posts_table(self) -> None:
-        self.conn
-        self.cur.execute(
-            '''
-            CREATE TABLE if NOT EXISTS posts(
-                id INTEGER PRIMARY KEY,
-                user_id INTEGER NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES users(id)
-            );            
-            '''
-        )
-        self.conn.commit()
-        logging.info('--- Table "POSTS" has been created ---')
+    # def create_posts_table(self) -> None:
+    #     self.conn
+    #     self.cur.execute(
+    #         '''
+    #         CREATE TABLE if NOT EXISTS posts(
+    #             id INTEGER PRIMARY KEY,
+    #             user_id INTEGER NOT NULL,
+    #             FOREIGN KEY (user_id) REFERENCES users(id)
+    #         );            
+    #         '''
+    #     )
+    #     self.conn.commit()
+    #     logging.info('--- Table "POSTS" has been created ---')
 
-    def drop_posts_table(self) -> None:
-        self.cur.execute(
-            '''
-            DROP TABLE posts;
-            '''
-        )
-        self.conn.commit()
+    # def drop_posts_table(self) -> None:
+    #     self.cur.execute(
+    #         '''
+    #         DROP TABLE posts;
+    #         '''
+    #     )
+    #     self.conn.commit()
 
-    def create_responders_table(self) -> None:
-        self.conn
-        self.cur.execute(
-            '''
-            CREATE TABLE if NOT EXISTS responders(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                responder_id INTEGER NOT NULL,
-                post_id INTEGER NOT NULL,
-                FOREIGN KEY (post_id) REFERENCES posts(id)
-            );            
-            '''
-        )
-        self.conn.commit()
-        logging.info('--- Table "RESPONDERS" has been created ---')
+    # def create_responders_table(self) -> None:
+    #     self.conn
+    #     self.cur.execute(
+    #         '''
+    #         CREATE TABLE if NOT EXISTS responders(
+    #             id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #             responder_id INTEGER NOT NULL,
+    #             post_id INTEGER NOT NULL,
+    #             FOREIGN KEY (post_id) REFERENCES posts(id)
+    #         );            
+    #         '''
+    #     )
+    #     self.conn.commit()
+    #     logging.info('--- Table "RESPONDERS" has been created ---')
 
 def create_table() -> None:
     DB_tables = Bot_tables_DB()
     DB_tables.create_users_table()
-    DB_tables.create_posts_table()
-    DB_tables.create_responders_table()
-    logging.info('--- Database for "SEVASTOPOL ADJUTOR BOT" has been created ---')
+    # DB_tables.create_posts_table()
+    # DB_tables.create_responders_table()
+    logging.info('--- Database for "SevCoffeService" has been created ---')
 
 
 if DB_NAME + '.db' not in os.listdir(DATA_PATH):

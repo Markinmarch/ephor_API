@@ -24,6 +24,7 @@ DATA_PATH = 'telegram_bot/datas'
 DB_NAME = 'main_database'
 
 CHANNEL_ID = -1001897240872
+
 BOT_ID = 6675914368
 
 CHANNEL_URL = 'https://t.me/+yROFZ7CTu6Y0ZDk6'

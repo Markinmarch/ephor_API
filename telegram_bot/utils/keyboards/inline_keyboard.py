@@ -39,8 +39,8 @@ start_registration_button = InlineKeyboardMarkup(
     inline_keyboard = [
         [
             InlineKeyboardButton(
-                text = 'Регистрация',
-                callback_data = 'create_account'
+                text = 'Верификация',
+                callback_data = 'give_phone'
             )
         ]
     ]

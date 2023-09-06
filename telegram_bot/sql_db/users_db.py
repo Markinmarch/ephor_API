@@ -16,8 +16,6 @@ class Users(Bot_tables_DB):
         self,
         user_id: int,
         user_name: str,
-        user_age: int,
-        user_gender: int,
         user_phone: int
     ) -> None:
         self.cur.execute(
@@ -25,17 +23,13 @@ class Users(Bot_tables_DB):
             INSERT INTO users (
                 id,
                 user_name,
-                user_age,
-                user_gender,
                 user_phone
             )
-            VALUES (?, ?, ?, ?, ?);            
+            VALUES (?, ?, ?);            
             ''',
             (
                 user_id,
                 user_name,
-                user_age,
-                user_gender,
                 user_phone,
             )
         )
