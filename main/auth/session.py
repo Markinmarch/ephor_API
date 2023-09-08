@@ -1,5 +1,5 @@
 from aiohttp import ClientSession
-from datetime import datetime
+import time
 import asyncio
 
 
@@ -20,7 +20,7 @@ class Session:
         self.time_zone = 3,
         self.action_in = 'Login',
         self.action_out = 'Logout',
-        self.id_request = datetime.now().strftime('%M%H%M%S%f')
+        self.id_request = time.time()
 
     @property
     async def connect(self):
@@ -34,18 +34,17 @@ class Session:
                 },
                 params = {
                     'action': self.action_in,
-                    '_dc': self.id_request,
-                    'start': 0,
-                    'limit': 25
+                    '_dc': self.id_request
                 },
                 headers = {'Content-Type': 'application/json'}
             ) as respond:
-                return await respond.json(content_type = 'text/html')
+                return respond.headers.get('Set-Cookie').split('; ')[0]
             
     @property        
     async def disconnect(self):
         async with ClientSession(self.url) as session:
-            async with session.post(
+            async with session.request(
+                method = 'POST',
                 url = self.path,
                 headers = {'Content-Type': 'application/json'},
                 json = {
@@ -58,13 +57,13 @@ class Session:
                     '_dc': self.id_request
                 }
             ) as respond:
-                return await respond.json(content_type = 'text/html')
+                return respond.status
 
 session = Session(
     login = LOGIN,
     password = PASSWORD
 )
-conn = asyncio.run(session.connect)
-disconn = asyncio.run(session.disconnect)
+connect = asyncio.run(session.connect)
+disconnect = asyncio.run(session.disconnect)
 
-print(conn)
+print(connect, disconnect)

@@ -16,5 +16,6 @@ CONNECTION = 'keep-alive'
 
 PATH = {
     'auth': '/api/2.0/Auth.php',
-    'automat': '/api/2.0/automat/Automat.php'
+    'automat': '/api/2.0/automat/Automat.php',
+    'read_all': '/api/2.1/report/automat/State.php'
 }
