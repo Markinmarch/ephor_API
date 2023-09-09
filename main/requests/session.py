@@ -3,33 +3,33 @@ import time
 import asyncio
 
 
-from main.settings.config import URL, PATH, LOGIN, PASSWORD
+from main.core.config import URL, PATH, LOGIN, PASSWORD
 
 
 class Session:
 
     def __init__(
         self,
-        login,
-        password
+        user_login,
+        user_password
     ):
-        self.login = login
-        self.password = password
+        self.user_login = user_login
+        self.user_password = user_password
         self.url = URL
         self.path = PATH['auth']
         self.time_zone = 3,
         self.action_in = 'Login',
         self.action_out = 'Logout',
-        self.id_request = time.time()
+        self.id_request = int(time.time())
 
     @property
-    async def connect(self):
+    async def login(self):
         async with ClientSession(base_url = self.url) as session:
             async with session.post(
                 url = self.path,
                 json = {
-                    'login': self.login,
-                    'password': self.password,
+                    'login': self.user_login,
+                    'password': self.user_password,
                     'time_zone': self.time_zone,
                 },
                 params = {
@@ -41,15 +41,14 @@ class Session:
                 return respond.headers.get('Set-Cookie').split('; ')[0]
             
     @property        
-    async def disconnect(self):
+    async def logout(self):
         async with ClientSession(self.url) as session:
-            async with session.request(
-                method = 'POST',
+            async with session.post(
                 url = self.path,
                 headers = {'Content-Type': 'application/json'},
                 json = {
-                    'login': self.login,
-                    'password': self.password,
+                    'login': self.user_login,
+                    'password': self.user_password,
                     'time_zone': self.time_zone,
                 },
                 params = {
@@ -60,10 +59,10 @@ class Session:
                 return respond.status
 
 session = Session(
-    login = LOGIN,
-    password = PASSWORD
+    user_login = LOGIN,
+    user_password = PASSWORD
 )
-connect = asyncio.run(session.connect)
-disconnect = asyncio.run(session.disconnect)
+connect = asyncio.run(session.login)
+disconnect = asyncio.run(session.logout)
 
-print(connect, disconnect)
+# print(connect, disconnect)

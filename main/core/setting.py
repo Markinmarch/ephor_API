@@ -1,6 +1,6 @@
 import logging
 
-from main.settings import config
+from main.core import config
 
 
 logging.basicConfig(
@@ -12,4 +12,4 @@ logger = logging.getLogger(__name__)
 
 def main():
     
-    from main import auth
+    from main import requests

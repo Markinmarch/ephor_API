@@ -1,7 +1,7 @@
 import asyncio
 
 
-from main.settings.setting import logger, main
+from main.core.setting import logger, main
 
 
 if __name__ == '__main__':
