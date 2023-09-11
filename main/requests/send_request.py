@@ -36,7 +36,7 @@ class Requests_automat:
                 return await respond.json(content_type = 'text/html')
         
 
-request = asyncio.run(Requests_automat().request)
+request = asyncio.run(Requests_automat.request)
 
 
 # print(request['data'])
