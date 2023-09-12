@@ -64,5 +64,3 @@ session = Session(
 )
 connect = asyncio.run(session.login)
 disconnect = asyncio.run(session.logout)
-
-# print(connect, disconnect)
