@@ -1,6 +1,5 @@
-from aiohttp import ClientSession
 import time
-import asyncio
+import requests
 
 
 from main.core.config import URL, PATH, LOGIN, PASSWORD
@@ -23,44 +22,46 @@ class Session:
         self.id_request = int(time.time())
 
     @property
-    async def login(self):
-        async with ClientSession(base_url = self.url) as session:
-            async with session.post(
-                url = self.path,
-                json = {
-                    'login': self.user_login,
-                    'password': self.user_password,
-                    'time_zone': self.time_zone,
-                },
-                params = {
-                    'action': self.action_in,
-                    '_dc': self.id_request
-                },
-                headers = {'Content-Type': 'application/json'}
-            ) as respond:
-                return respond.headers.get('Set-Cookie').split('; ')[0]
+    def login(self):
+        respond = requests.api.post(
+            url = self.url + self.path,
+            json = {
+                'login': self.user_login,
+                'password': self.user_password,
+                'time_zone': self.time_zone
+            },
+            params = {
+                'action': self.action_in,
+                '_dc': self.id_request
+            },
+            headers = {
+                'Content-Type': 'application/json'
+            }
+        )
+        return respond.headers.get('Set-Cookie').split('; ')[0]
             
-    @property        
-    async def logout(self):
-        async with ClientSession(self.url) as session:
-            async with session.post(
-                url = self.path,
-                headers = {'Content-Type': 'application/json'},
-                json = {
-                    'login': self.user_login,
-                    'password': self.user_password,
-                    'time_zone': self.time_zone,
-                },
-                params = {
-                    'action': self.action_out,
-                    '_dc': self.id_request
-                }
-            ) as respond:
-                return respond.status
+    @property
+    def logout(self):
+        respond = requests.api.post(
+            url = self.url + self.path,
+            json = {
+                'login': self.user_login,
+                'password': self.user_password,
+                'time_zone': self.time_zone
+            },
+            params = {
+                'action': self.action_out,
+                '_dc': self.id_request
+            },
+            headers = {
+                'Content-Type': 'application/json'
+            }
+        )
+        return respond.status_code
 
 session = Session(
     user_login = LOGIN,
     user_password = PASSWORD
 )
-connect = asyncio.run(session.login)
-disconnect = asyncio.run(session.logout)
+connect = session.login
+disconnect = session.logout
