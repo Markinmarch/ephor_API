@@ -103,17 +103,17 @@ class Responders:
 
     @property
     def listen_errors(self):
-        while True:
-            if self.comparison != None:
-                for error_automat in self.merge_params:
-                    message = (
-                        f'Автомат № {error_automat["id"]}\n'
-                        f'{error_automat["adress"]}\n'
-                        f'{error_automat["point"]} --> {error_automat["name"]}\n'
-                        f'{error_automat["error"]}'
-                        ),
-                    logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-                    self.send_message(message = message)
-            time.sleep(60)
-    
-Responders().listen_errors
+        if self.comparison != None:
+            for error_automat in self.merge_params:
+                message = (
+                    f'Автомат № {error_automat["id"]}\n'
+                    f'{error_automat["adress"]}\n'
+                    f'{error_automat["point"]} --> {error_automat["name"]}\n'
+                    f'{error_automat["error"]}'
+                    ),
+                logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
+                self.send_message(message = message)
+                
+while True:
+    Responders().listen_errors
+    time.sleep(60)
