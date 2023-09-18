@@ -5,21 +5,22 @@ import logging
 
 
 from telegram_bot.settings.config import BOT_TOKEN, CHANNEL_ID
-from main.core.config import STATUS
+from main.core.config import STATUS, PATH, ACTION
 from main.request.request_to_server import RequestsServer
 
 
 class Responders:
 
     def __init__(self):
-        self.R_server = RequestsServer().request_server
+        self.request_server = RequestsServer()
+        self.request_state = self.request_server.request_state(PATH['state'], ACTION['read'])
         self.token = BOT_TOKEN
         self.chat_id = CHANNEL_ID
         self.post_method = 'sendMessage'
 
     @property
     def get_params_automat_ERROR(self):
-        automats_ERROR = [param for param in self.R_server['data'] if param['automat_state'] == STATUS['error']]
+        automats_ERROR = [param for param in self.request_state['data'] if param['automat_state'] == STATUS['error']]
         ids_automat_ERROR =  [ids['automat_id'] for ids in automats_ERROR]
         with open(
             file = 'main/request/datas.json',
@@ -76,7 +77,11 @@ class Responders:
     def check_automat_errors(self) -> list:
         error_descriptions = []
         for params in self.get_params:
-            get_error = RequestsServer().check_error(params['id'])
+            get_error = self.request_server.request_error(
+                PATH['error'],
+                ACTION['read'],
+                params['id']
+            )
         for error in get_error['data']:
             error_descriptions.append({'error': error['description']})
         return error_descriptions

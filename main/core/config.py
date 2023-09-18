@@ -26,3 +26,9 @@ PATH = {
     'state': '/api/2.1/report/automat/State.php',
     'error': '/api/2.1/report/automat/Error.php'
 }
+
+ACTION = {
+    'read': 'Read',
+    'login': 'Login',
+    'logout': 'Logout'
+}
