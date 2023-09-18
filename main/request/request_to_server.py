@@ -8,7 +8,7 @@ from main.core.config import ACTION
 class RequestsServer(Session):
 
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
         self.session = Session()
         self.connect = self.session.login(action = ACTION['login'])
         self.disconnect = self.session.logout(action = ACTION['logout'])

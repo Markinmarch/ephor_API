@@ -10,6 +10,10 @@ LOGIN = os.getenv('LOGIN', '')
 
 PASSWORD = os.getenv('PASSWORD', '')
 
+CHANNEL_ID = os.getenv('CHANNEL_ID', '')
+
+BOT_TOKEN = os.getenv('BOT_TOKEN', '')
+
 URL = 'https://erp.ephor.online'
 
 STATUS = {
@@ -32,3 +36,4 @@ ACTION = {
     'login': 'Login',
     'logout': 'Logout'
 }
+

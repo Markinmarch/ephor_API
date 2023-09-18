@@ -4,8 +4,7 @@ import time
 import logging
 
 
-from telegram_bot.settings.config import BOT_TOKEN, CHANNEL_ID
-from main.core.config import STATUS, PATH, ACTION
+from main.core.config import STATUS, PATH, ACTION, BOT_TOKEN, CHANNEL_ID
 from main.request.request_to_server import RequestsServer
 
 

@@ -2,8 +2,8 @@ import logging
 
 
 from aiogram import Bot, Dispatcher, executor
-from aiogram.contrib.fsm_storage.redis import RedisStorage2
-
+# from aiogram. contrib.fsm_storage.redis import RedisStorage2
+from aiogram.fsm.storage.redis import RedisStorage
 
 from telegram_bot.settings import config
 
@@ -19,11 +19,7 @@ bot = Bot(
     parse_mode = 'HTML'
 )
 
-storage = RedisStorage2(
-    host = config.REDIS_HOST,
-    port = config.REDIS_PORT,
-    db = config.REDIS_BD
-)
+storage = RedisStorage()
 
 dp = Dispatcher(
     bot,

@@ -10,15 +10,15 @@ class Session:
     def __init__(self):
         self.user_login = LOGIN
         self.user_password = PASSWORD
-        self.url = URL,
+        self.url = URL
         self.path = PATH['auth']
-        self.time_zone = 3,
+        self.time_zone = 3
         self.id_request = int(time.time())
         self.json = {
                 'login': self.user_login,
                 'password': self.user_password,
                 'time_zone': self.time_zone
-            },
+            }
         self.headers = {'Content-Type': 'application/json'}
 
     def login(self, action):
