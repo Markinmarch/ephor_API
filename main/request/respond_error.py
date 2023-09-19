@@ -117,7 +117,7 @@ class Responders:
                     ),
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
                 self.send_message(message = message)
-                
+            
 while True:
     Responders().listen_errors
     time.sleep(60)
