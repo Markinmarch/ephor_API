@@ -43,8 +43,3 @@ class RequestsServer(Session):
         )
         self.disconnect
         return respond.json()
-
-    # def check_params_automat(self, path, id):
-    #     respond = requests.api.get(
-
-    #     )
