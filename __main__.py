@@ -1,6 +1,3 @@
-import asyncio
-
-
 from main.core.setting import logger, main
 
 
