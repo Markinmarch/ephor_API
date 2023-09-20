@@ -4,7 +4,7 @@ import time
 import logging
 
 
-from main.core.config import STATUS, PATH, ACTION, BOT_TOKEN, CHANNEL_ID
+from main.core.config import STATE, PATH, ACTION, BOT_TOKEN, CHANNEL_ID
 from main.request.request_to_server import RequestsServer
 
 
@@ -19,13 +19,7 @@ class Responders:
 
     @property
     def get_params_automat_ERROR(self):
-        automats_ERROR = [param for param in self.request_state['data'] if param['automat_state'] == STATUS['error']]
-        ids_automat_ERROR =  [ids['automat_id'] for ids in automats_ERROR]
-        with open(
-            file = 'main/request/datas.json',
-            mode = 'w+'
-        ) as file:
-            json.dump(ids_automat_ERROR, file)
+        automats_ERROR = [param for param in self.request_state['data'] if param['automat_state'] == STATE['error']]
         return automats_ERROR
 
     @property
@@ -37,52 +31,37 @@ class Responders:
             ) as file:
                 old_ids = json.load(file)
             comparison_list = [automat for automat in self.get_params_automat_ERROR if automat['automat_id'] not in old_ids]
-            if comparison_list == []:
-                return None
-            else:
-                return comparison_list
+            return comparison_list     
+               
         except FileNotFoundError:
             return self.get_params_automat_ERROR
     
     @property
     def get_params(self):
-        try:
-            errors_automat_list = []
-            for params in self.comparison:
-                automat_param = {
-                    'id': params['automat_id'],
-                    'model': params['model_name'],
-                    'adress': params['point_adress'],
-                    'point': params['point_comment'],
-                    'name': params['point_name']
-                }
-                errors_automat_list.append(automat_param)
-            return errors_automat_list      
-
-        except TypeError:
-            errors_automat_list = []
-            for params in self.get_params_automat_ERROR:
-                automat_param = {
-                    'id': params['automat_id'],
-                    'model': params['model_name'],
-                    'adress': params['point_adress'],
-                    'point': params['point_comment'],
-                    'name': params['point_name']
-                }
-                errors_automat_list.append(automat_param)
-            return errors_automat_list      
+        errors_automat_list = []
+        for params in self.comparison:
+            automat_param = {
+                'id': params['automat_id'],
+                'model': params['model_name'],
+                'adress': params['point_adress'],
+                'point': params['point_comment'],
+                'name': params['point_name']
+            }
+            errors_automat_list.append(automat_param)
+        return errors_automat_list            
 
     @property
     def check_automat_errors(self) -> list:
         error_descriptions = []
         for params in self.get_params:
+            pass
             get_error = self.request_server.request_error(
                 PATH['error'],
                 ACTION['read'],
                 params['id']
             )
-        for error in get_error['data']:
-            error_descriptions.append({'error': error['description']})
+            for error in get_error['data']:
+                error_descriptions.append({'error': error['description']})
         return error_descriptions
 
     @property
@@ -107,16 +86,21 @@ class Responders:
 
     @property
     def listen_errors(self):
-        if self.comparison != None:
-            for error_automat in self.merge_params:
-                message = (
-                    f'Автомат № {error_automat["id"]}\n'
-                    f'{error_automat["adress"]}\n'
-                    f'{error_automat["point"]} --> {error_automat["name"]}\n'
-                    f'{error_automat["error"]}'
-                    ),
-                logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-                self.send_message(message = message)
+        for error_automat in self.merge_params:
+            message = (
+                f'Автомат № {error_automat["id"]}\n'
+                f'{error_automat["adress"]}\n'
+                f'{error_automat["point"]} --> {error_automat["name"]}\n'
+                f'{error_automat["error"]}'
+                ),
+            logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
+            self.send_message(message = message)
+            ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
+            with open(
+                file = 'main/request/datas.json',
+                mode = 'w+'
+            ) as file:
+                json.dump(ids_automat_ERROR, file)
             
 while True:
     Responders().listen_errors

@@ -16,7 +16,7 @@ BOT_TOKEN = os.getenv('BOT_TOKEN', '')
 
 URL = 'https://erp.ephor.online'
 
-STATUS = {
+STATE = {
     'error': 0,
     'warning': 1,
     'no connect': 2,
