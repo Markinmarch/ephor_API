@@ -31,13 +31,19 @@ class RequestsServer(Session):
         self.disconnect
         return respond.json()
     
-    def request_error(self, path, action, id):
+    def request_params(
+        self,
+        path: str,
+        action: str,
+        request_filter: str,
+        id: int
+    ) -> list:
         respond = requests.api.get(
             url = self.url + path,
             params = {
                 'action': action,
                 '_dc': self.id_request,
-                'filter': ('[{"property": "automat_id", "value": %s}]' % id)
+                'filter': ('[{"property": %s, "value": %s}]' % request_filter, id)
             },
             headers = self.headers_request
         )

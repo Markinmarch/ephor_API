@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 def main():
     
-    from main import request_ephor
+    from main import respond_ephor
     while True:
-        request_ephor.respond_error.Responders().listen_errors
+        respond_ephor.respond_error.RespondError().listen_errors
+        respond_ephor.respond_coins.RespondCoinsCount().listen_coins_count
         time.sleep(40)

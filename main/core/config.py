@@ -28,12 +28,19 @@ PATH = {
     'auth': '/api/2.0/Auth.php',
     'automat': '/api/2.0/automat/Automat.php',
     'state': '/api/2.1/report/automat/State.php',
-    'error': '/api/2.1/report/automat/Error.php'
+    'error': '/api/2.1/report/automat/Error.php',
+    'coins': '/api/2.1/automat/Device.php'
+}
+
+FILTER = {
+    'automat': 'automat_id',
+    'device': 'device_id'
 }
 
 ACTION = {
     'read': 'Read',
     'login': 'Login',
-    'logout': 'Logout'
+    'logout': 'Logout',
+    'automat_device': 'ReadAutomatDevice'
 }
 

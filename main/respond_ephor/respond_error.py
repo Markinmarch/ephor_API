@@ -1,32 +1,29 @@
 import requests
 import json
-import time
 import logging
 
 
-from main.core.config import STATE, PATH, ACTION, BOT_TOKEN, CHANNEL_ID
+from main.core.config import STATE, PATH, ACTION, FILTER
 from main.request_ephor.request_to_server import RequestsServer
+from main.respond_ephor.send_error import send_message
 
 
-class Responders:
+class RespondError(RequestsServer):
 
     def __init__(self):
-        self.request_server = RequestsServer()
-        self.request_state = self.request_server.request_state(PATH['state'], ACTION['read'])
-        self.token = BOT_TOKEN
-        self.chat_id = CHANNEL_ID
-        self.post_method = 'sendMessage'
+        super().__init__()
+        self.state = self.request_state(PATH['state'], ACTION['read'])
 
     @property
     def get_params_automat_ERROR(self):
-        automats_ERROR = [param for param in self.request_state['data'] if param['automat_state'] == STATE['error']]
+        automats_ERROR = [param for param in self.state['data'] if param['automat_state'] == STATE['error']]
         return automats_ERROR
 
     @property
-    def comparison(self):
+    def comparison_error_ids(self):
         try:
             with open(
-                file = 'main/request_ephor/datas.json',
+                file = 'main/respond_ephor/errors_id.json',
                 mode = 'r'
             ) as file:
                 old_ids = json.load(file)
@@ -39,7 +36,7 @@ class Responders:
     @property
     def get_params(self):
         errors_automat_list = []
-        for params in self.comparison:
+        for params in self.comparison_error_ids:
             automat_param = {
                 'id': params['automat_id'],
                 'model': params['model_name'],
@@ -54,10 +51,10 @@ class Responders:
     def check_automat_errors(self) -> list:
         error_descriptions = []
         for params in self.get_params:
-            pass
-            get_error = self.request_server.request_error(
+            get_error = self.request_params(
                 PATH['error'],
                 ACTION['read'],
+                FILTER['automat'],
                 params['id']
             )
             for error in get_error['data']:
@@ -71,19 +68,6 @@ class Responders:
             check_list.append(params_dict | params_errors)
         return check_list
 
-    def send_message(
-        self,
-        message
-    ):
-        response = requests.post(
-            url = 'https://api.telegram.org/bot{0}/{1}'.format(self.token, self.post_method),
-            data = {
-                'chat_id': self.chat_id,
-                'text': message
-            }
-        )
-        return response.json()
-
     @property
     def listen_errors(self):
         for error_automat in self.merge_params:
@@ -94,10 +78,10 @@ class Responders:
                 f'{error_automat["error"]}'
                 ),
             logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-            self.send_message(message = message)
+            send_message(message = message)
             ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
             with open(
-                file = 'main/request_ephor/datas.json',
+                file = 'main/respond_ephor/errors_id.json',
                 mode = 'w+'
             ) as file:
                 json.dump(ids_automat_ERROR, file)
