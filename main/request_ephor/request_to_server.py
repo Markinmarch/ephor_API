@@ -1,7 +1,7 @@
 import requests
 
 
-from main.request.session import Session
+from main.request_ephor.session import Session
 from main.core.config import ACTION
 
 

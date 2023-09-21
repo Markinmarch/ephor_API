@@ -5,7 +5,7 @@ import logging
 
 
 from main.core.config import STATE, PATH, ACTION, BOT_TOKEN, CHANNEL_ID
-from main.request.request_to_server import RequestsServer
+from main.request_ephor.request_to_server import RequestsServer
 
 
 class Responders:
