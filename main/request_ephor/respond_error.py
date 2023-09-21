@@ -26,7 +26,7 @@ class Responders:
     def comparison(self):
         try:
             with open(
-                file = 'main/request/datas.json',
+                file = 'main/request_ephor/datas.json',
                 mode = 'r'
             ) as file:
                 old_ids = json.load(file)
@@ -97,7 +97,7 @@ class Responders:
             self.send_message(message = message)
             ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
             with open(
-                file = 'main/request/datas.json',
+                file = 'main/request_ephor/datas.json',
                 mode = 'w+'
             ) as file:
                 json.dump(ids_automat_ERROR, file)
