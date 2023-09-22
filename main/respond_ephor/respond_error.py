@@ -6,6 +6,7 @@ import logging
 from main.core.config import STATE, PATH, ACTION, FILTER
 from main.request_ephor.request_to_server import RequestsServer
 from main.respond_ephor.send_error import send_message
+from main.filters.sales_time import cathc_sales_error
 
 
 class RespondError(RequestsServer):
@@ -62,11 +63,12 @@ class RespondError(RequestsServer):
         return error_descriptions
 
     @property
+    @cathc_sales_error
     def merge_params(self):
-        check_list = []
+        merge_list = []
         for params_dict, params_errors in zip(self.get_params, self.check_automat_errors):
-            check_list.append(params_dict | params_errors)
-        return check_list
+            merge_list.append(params_dict | params_errors)
+        return merge_list
 
     @property
     def listen_errors(self):
