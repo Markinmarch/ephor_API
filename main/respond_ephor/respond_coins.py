@@ -20,8 +20,9 @@ class RespondCoinsCount(RequestsServer):
     def get_automat_COINS(self):
         automats_COINS = [param for param in self.coins['data'] if param['model_name'] != 'Coffeemar G-23' and param['automat_state'] == STATE['ok']]
         get_few_coins_automat = [param for param in automats_COINS if param['now_tube_val'] <= 550]
+        # print(get_few_coins_automat)
         return get_few_coins_automat
-    
+        
     @property
     def comparison_coins_ids(self):
         try:
@@ -30,6 +31,7 @@ class RespondCoinsCount(RequestsServer):
                 mode = 'r'
             ) as file:
                 old_ids = json.load(file)
+
             comparison_list = [automat for automat in self.get_automat_COINS if automat['automat_id'] not in old_ids]
             return comparison_list     
                
@@ -39,7 +41,7 @@ class RespondCoinsCount(RequestsServer):
     @property
     def get_params(self) -> list:
         few_coins_list = []
-        for params in self.get_automat_COINS:
+        for params in self.comparison_coins_ids:
             automat_param = {
                 'id': params['automat_id'],
                 'model': params['model_name'],
