@@ -81,7 +81,7 @@ class RespondError(RequestsServer):
             if param['error'] in ERRORS and 8 <= now_hour <= 11 and now_day not in weekends:
                 return None
             elif param not in ERRORS:
-                return self.prepare_params
+                return self.merge_params
             
     @property
     def listen_errors(self):
