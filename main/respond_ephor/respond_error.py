@@ -1,12 +1,11 @@
-import requests
+import datetime
 import json
 import logging
 
 
-from main.core.config import STATE, PATH, ACTION, FILTER
+from main.core.config import STATE, PATH, ACTION, FILTER, ERRORS
 from main.request_ephor.request_to_server import RequestsServer
 from main.respond_ephor.send_error import send_message
-from main.filters.sales_time import cathc_sales_error
 
 
 class RespondError(RequestsServer):
@@ -52,7 +51,6 @@ class RespondError(RequestsServer):
         return errors_automat_list            
 
     @property
-    @cathc_sales_error
     def check_automat_errors(self) -> list:
         error_descriptions = []
         for params in self.get_params:
@@ -66,6 +64,7 @@ class RespondError(RequestsServer):
                 error_descriptions.append({'error': error['description']})
         return error_descriptions
 
+    
     @property
     def merge_params(self):
         merge_list = []
@@ -74,8 +73,19 @@ class RespondError(RequestsServer):
         return merge_list
 
     @property
+    def prepare_params(self):
+        now_hour = datetime.datetime.now().hour
+        weekends = [5, 6]
+        now_day = datetime.datetime.today().weekday()
+        for param in self.merge_params:
+            if param['error'] in ERRORS and 8 <= now_hour <= 11 and now_day not in weekends:
+                return None
+            elif param not in ERRORS:
+                return self.prepare_params
+            
+    @property
     def listen_errors(self):
-        for error_automat in self.merge_params:
+        for error_automat in self.prepare_params():
             message = (
                 f'Автомат № {error_automat["id"]}\n'
                 f'{error_automat["adress"]}\n'
@@ -89,4 +99,4 @@ class RespondError(RequestsServer):
                 file = 'main/respond_ephor/errors_id.json',
                 mode = 'w+'
             ) as file:
-                json.dump(ids_automat_COINS, file)
+                json.dump(ids_automat_COINS, file)        
