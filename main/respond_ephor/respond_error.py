@@ -52,7 +52,7 @@ class RespondError(RequestsServer):
         return errors_automat_list            
 
     @property
-    # @cathc_sales_error
+    @cathc_sales_error
     def check_automat_errors(self) -> list:
         error_descriptions = []
         for params in self.get_params:
@@ -83,7 +83,7 @@ class RespondError(RequestsServer):
                 f'{error_automat["error"]}'
                 ),
             logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-            # send_message(message)
+            send_message(message)
             ids_automat_COINS =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
             with open(
                 file = 'main/respond_ephor/errors_id.json',
