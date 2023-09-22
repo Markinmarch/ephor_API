@@ -43,7 +43,7 @@ class RequestsServer(Session):
             params = {
                 'action': action,
                 '_dc': self.id_request,
-                'filter': ('[{"property": %s, "value": %s}]' % request_filter, id)
+                'filter': ('[{"property": "%s", "value": %s}]' %(request_filter, id))
             },
             headers = self.headers_request
         )

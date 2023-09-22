@@ -18,9 +18,8 @@ class RespondCoinsCount(RequestsServer):
 
     @property
     def get_automat_COINS(self):
-        print(self.coins)
         automats_COINS = [param for param in self.coins['data'] if param['model_name'] != 'Coffeemar G-23' and param['automat_state'] == STATE['ok']]
-        get_few_coins_automat = [param for param in automats_COINS if param['now_tube_val'] <= 500]
+        get_few_coins_automat = [param for param in automats_COINS if param['now_tube_val'] <= 550]
         return get_few_coins_automat
     
     @property
@@ -37,8 +36,6 @@ class RespondCoinsCount(RequestsServer):
         except FileNotFoundError:
             return self.get_automat_COINS
 
-# print(RespondCoinsCount().get_automat_COINS)
-
     @property
     def get_params(self) -> list:
         few_coins_list = []
@@ -49,12 +46,10 @@ class RespondCoinsCount(RequestsServer):
                 'adress': params['point_adress'],
                 'point': params['point_comment'],
                 'name': params['point_name'],
-                'error': 'В монетоприёмнике на размен меньше 500 рублей.'
+                'error': 'В монетоприёмнике мало размена.'
             }
             few_coins_list.append(automat_param)
         return few_coins_list  
-
-# print(RespondCoinsCount().get_params)
 
     @property
     def listen_coins_count(self):
@@ -69,7 +64,7 @@ class RespondCoinsCount(RequestsServer):
             send_message(message)
             ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_automat_COINS]
             with open(
-                file = 'main/respond_ephor/datas.json',
+                file = 'main/respond_ephor/coins_ids.json',
                 mode = 'w+'
             ) as file:
                 json.dump(ids_automat_ERROR, file)

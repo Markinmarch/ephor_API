@@ -49,6 +49,7 @@ class RespondError(RequestsServer):
         return errors_automat_list            
 
     @property
+    @cathc_sales_error
     def check_automat_errors(self) -> list:
         error_descriptions = []
         for params in self.get_params:
@@ -63,7 +64,6 @@ class RespondError(RequestsServer):
         return error_descriptions
 
     @property
-    @cathc_sales_error
     def merge_params(self):
         merge_list = []
         for params_dict, params_errors in zip(self.get_params, self.check_automat_errors):
@@ -80,10 +80,10 @@ class RespondError(RequestsServer):
                 f'{error_automat["error"]}'
                 ),
             logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-            send_message(message = message)
-            ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
+            send_message(message)
+            ids_automat_COINS =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
             with open(
                 file = 'main/respond_ephor/errors_id.json',
                 mode = 'w+'
             ) as file:
-                json.dump(ids_automat_ERROR, file)
+                json.dump(ids_automat_COINS, file)
