@@ -1,6 +1,5 @@
 import logging
-
-from main.core import config
+import time
 
 
 logging.basicConfig(
@@ -12,4 +11,8 @@ logger = logging.getLogger(__name__)
 
 def main():
     
-    from main import request
+    from main import respond_ephor
+    while True:
+        respond_ephor.respond_error.RespondError().listen_errors
+        respond_ephor.respond_coins.RespondCoinsCount().listen_coins_count
+        time.sleep(40)
