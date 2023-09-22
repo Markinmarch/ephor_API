@@ -85,7 +85,7 @@ class RespondError(RequestsServer):
             
     @property
     def listen_errors(self):
-        for error_automat in self.prepare_params():
+        for error_automat in self.prepare_params:
             message = (
                 f'Автомат № {error_automat["id"]}\n'
                 f'{error_automat["adress"]}\n'
