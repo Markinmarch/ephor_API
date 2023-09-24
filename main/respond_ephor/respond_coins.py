@@ -2,7 +2,7 @@ import logging
 import json
 
 
-from main.core.config import STATE, PATH, ACTION, FILTER
+from main.core.config import STATE, PATH, ACTION
 from main.request_ephor.request_to_server import RequestsServer
 from main.respond_ephor.send_error import send_message
 
@@ -20,7 +20,6 @@ class RespondCoinsCount(RequestsServer):
     def get_automat_COINS(self):
         automats_COINS = [param for param in self.coins['data'] if param['model_name'] != 'Coffeemar G-23' and param['automat_state'] == STATE['ok']]
         get_few_coins_automat = [param for param in automats_COINS if param['now_tube_val'] <= 550]
-        # print(get_few_coins_automat)
         return get_few_coins_automat
         
     @property
@@ -62,7 +61,7 @@ class RespondCoinsCount(RequestsServer):
                 f'{error_automat["point"]} --> {error_automat["name"]}\n'
                 f'{error_automat["error"]}'
                 ),
-            logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
+            logging.warning(f'Автомат № {error_automat["id"]}: {error_automat["error"]}')
             send_message(message)
             ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_automat_COINS]
             with open(

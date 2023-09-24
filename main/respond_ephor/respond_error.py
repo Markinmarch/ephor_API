@@ -80,23 +80,26 @@ class RespondError(RequestsServer):
         for param in self.merge_params:
             if param['error'] in ERRORS and 8 <= now_hour <= 11 and now_day not in weekends:
                 return None
-            elif param not in ERRORS:
+            elif param['error'] not in ERRORS:
                 return self.merge_params
             
     @property
     def listen_errors(self):
-        for error_automat in self.prepare_params:
-            message = (
-                f'Автомат № {error_automat["id"]}\n'
-                f'{error_automat["adress"]}\n'
-                f'{error_automat["point"]} --> {error_automat["name"]}\n'
-                f'{error_automat["error"]}'
-                ),
-            logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-            send_message(message)
-            ids_automat_COINS =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
-            with open(
-                file = 'main/respond_ephor/errors_id.json',
-                mode = 'w+'
-            ) as file:
-                json.dump(ids_automat_COINS, file)        
+        if self.prepare_params == None:
+            return None
+        else:
+            for error_automat in self.prepare_params:
+                message = (
+                    f'Автомат № {error_automat["id"]}\n'
+                    f'{error_automat["adress"]}\n'
+                    f'{error_automat["point"]} --> {error_automat["name"]}\n'
+                    f'{error_automat["error"]}'
+                    ),
+                logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
+                send_message(message)
+                ids_automat_COINS =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
+                with open(
+                    file = 'main/respond_ephor/errors_id.json',
+                    mode = 'w+'
+                ) as file:
+                    json.dump(ids_automat_COINS, file)        
