@@ -78,7 +78,7 @@ class RespondError(RequestsServer):
         weekends = [5, 6]
         now_day = datetime.datetime.today().weekday()
         for param in self.merge_params:
-            if param['error'] in ERRORS and 8 <= now_hour <= 11 and now_day not in weekends:
+            if param['error'] in ERRORS and 9 <= now_hour <= 13 and now_day not in weekends:
                 return None
             elif param['error'] not in ERRORS:
                 return self.merge_params
