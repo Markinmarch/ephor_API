@@ -15,4 +15,5 @@ def main():
     while True:
         respond_ephor.respond_error.RespondError().listen_errors
         respond_ephor.respond_coins.RespondCoinsCount().listen_coins_count
+        respond_ephor.respond_no_signal.RespondErrorSIGNAL().listen_signal_error
         time.sleep(40)
