@@ -26,7 +26,7 @@ class RespondError(RequestsServer):
     def comparison_error_ids(self):
         try:
             with open(
-                file = 'main/respond_ephor/errors_id.json',
+                file = 'main/respond_ephor/ids_errors/errors_id.json',
                 mode = 'r'
             ) as file:
                 old_ids = json.load(file)
@@ -99,7 +99,7 @@ class RespondError(RequestsServer):
                 send_message(message)
                 ids_automat_COINS =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
                 with open(
-                    file = 'main/respond_ephor/errors_id.json',
+                    file = 'main/respond_ephor/ids_errors/errors_id.json',
                     mode = 'w+'
                 ) as file:
                     json.dump(ids_automat_COINS, file)        
