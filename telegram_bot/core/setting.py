@@ -2,7 +2,6 @@ import logging
 
 
 from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
 
 
 from telegram_bot.core.config import BOT_TOKEN
@@ -10,6 +9,7 @@ from telegram_bot.core.config import BOT_TOKEN
 
 logging.basicConfig(
     format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level = logging.INFO
 )
 logger = logging.getLogger(__name__)
 
