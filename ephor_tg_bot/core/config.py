@@ -20,3 +20,7 @@ TG_ROUTE_7 = None
 ADMIN_IDS = [
     805875522
 ]
+
+DB_PATH = 'telegram_bot/sql_db'
+
+DB_NAME = 'ephor_API'
