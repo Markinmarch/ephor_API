@@ -4,7 +4,7 @@ import logging
 from aiogram import Bot, Dispatcher
 
 
-from telegram_bot.core.config import BOT_TOKEN
+from ephor_tg_bot.core.config import BOT_TOKEN
 
 
 logging.basicConfig(
@@ -21,5 +21,5 @@ bot = Bot(
 dp = Dispatcher()
 
 async def main_bot() -> None:
-    from telegram_bot import account
+    from ephor_tg_bot import account
     await dp.start_polling(bot)

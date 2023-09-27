@@ -1,18 +1,22 @@
-from aiogram import types
-from aiogram.filters import CommandStart
-from aiogram.fsm.context import FSMContext
+from aiogram import types, F
 
 
-from telegram_bot.core.setting import dp
-from telegram_bot.utils.state import UsersForm
-from telegram_bot.utils.keyboards.reply import get_phone_user
+from ephor_tg_bot.core.setting import dp
+from ephor_tg_bot.sql_db.users_db import users
+from ephor_tg_bot.utils.state import UserForm
 
 
-@dp.message(UsersForm.name)
-async def add_name_cmd_phone(message: types.Message, state: FSMContext) -> None:
-    await state.update_data(name = message.text)
-    await state.set_state(UsersForm.phone)
+@dp.message(UserForm.name)
+async def add_name(message: types.Message) -> None:
+    users.insert_users(
+        user_id = message.from_user.id,
+        user_name = message.text
+    )
     await message.answer(
-        text = 'Подтвердите отправку своего номера телефона',
-        reply_markup = get_phone_user
+        text = 'Авторизация успешна.'
+    )
+    await message.bot.send_animation(
+        chat_id = message.from_user.id,
+        animation = 'CAACAgIAAxkBAAEKZnRlFDmKVSml19qx0Y1QVn4OxspjNAACTgMAArrAlQUJVun81CkD9jAE',
+        caption = 'Авторизация завершена',
     )

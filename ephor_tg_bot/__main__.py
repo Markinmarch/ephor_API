@@ -1,6 +1,6 @@
 import logging
 import asyncio
-from telegram_bot.core.setting import logger, main_bot
+from ephor_tg_bot.core.setting import logger, main_bot
 
 
 if __name__ == '__main__':

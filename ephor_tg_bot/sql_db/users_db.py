@@ -1,7 +1,7 @@
 import logging
 
 
-from telegram_bot.sql_db.bot_tables import Bot_tables_DB
+from ephor_tg_bot.sql_db.bot_tables import Bot_tables_DB
 
 
 class Users(Bot_tables_DB):
@@ -15,22 +15,19 @@ class Users(Bot_tables_DB):
     def insert_users(
         self,
         user_id: int,
-        user_name: str,
-        user_phone: int
+        user_name: str
     ) -> None:
         self.cur.execute(
             '''
             INSERT INTO users (
                 id,
-                user_name,
-                user_phone
+                user_name
             )
-            VALUES (?, ?, ?);            
+            VALUES (?, ?);            
             ''',
             (
                 user_id,
-                user_name,
-                user_phone
+                user_name
             )
         )
         self.conn.commit()

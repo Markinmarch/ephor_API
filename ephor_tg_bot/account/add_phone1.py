@@ -3,9 +3,9 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 
 
-from telegram_bot.core.setting import dp
-from telegram_bot.utils.state import UsersForm
-from telegram_bot.sql_db.users_db import users
+from ephor_tg_bot.core.setting import dp
+from ephor_tg_bot.utils.state import UsersForm
+from ephor_tg_bot.sql_db.users_db import users
 
 
 

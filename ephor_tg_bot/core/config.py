@@ -7,6 +7,8 @@ load_dotenv(dotenv_path = 'config.env')
 
 CHANNEL_ID = os.getenv('CHANNEL_ID', '')
 
+BOT_URL = 'https://t.me/SevCoffe_bot'
+
 BOT_TOKEN = os.getenv('BOT_TOKEN', '')
 
 TG_ROUTE_1 = None
@@ -21,6 +23,6 @@ ADMIN_IDS = [
     805875522
 ]
 
-DB_PATH = 'telegram_bot/sql_db'
+DB_PATH = 'ephor_tg_bot/sql_db'
 
 DB_NAME = 'ephor_API'

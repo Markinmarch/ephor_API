@@ -3,6 +3,9 @@ import logging
 import sqlite3
 
 
+from ephor_tg_bot.core.config import DB_NAME, DB_PATH
+
+
 class Bot_tables_DB:
     '''
     Класс реализует создание связанных между собой таблиц базы данных.
@@ -13,8 +16,8 @@ class Bot_tables_DB:
     '''
 
     def __init__(self):
-        self.name = 'ephor_API'
-        self.path = 'telegram_bot/sql_db'
+        self.name = DB_NAME
+        self.path = DB_PATH
         self.conn = sqlite3.connect(f'{self.path}/{self.name}.db')
         self.cur = self.conn.cursor()
 
@@ -24,8 +27,7 @@ class Bot_tables_DB:
             '''
             CREATE TABLE if NOT EXISTS users(
                 id INTEGER PRIMARY KEY,
-                user_name TEXT NOT NULL,
-                user_phone INTEGER NOT NULL
+                user_name TEXT NOT NULL
             );
             '''
         )
@@ -77,7 +79,7 @@ def create_table() -> None:
     logging.info('--- Database for "SevCoffeeService BOT" has been created ---')
 
 
-if 'ephor_API' + '.db' not in os.listdir('telegram_bot/sql_db'):
+if 'ephor_API' + '.db' not in os.listdir('ephor_tg_bot/sql_db'):
     create_table()
 else:
     logging.info('--- Database for "SevCoffeeService" connection established ---')
