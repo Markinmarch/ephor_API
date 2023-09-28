@@ -11,13 +11,15 @@ BOT_URL = 'https://t.me/SevCoffe_bot'
 
 BOT_TOKEN = os.getenv('BOT_TOKEN', '')
 
-TG_ROUTE_1 = None
-TG_ROUTE_2 = None
-TG_ROUTE_3 = None
-TG_ROUTE_4 = None
-TG_ROUTE_5 = None
-TG_ROUTE_6 = None
-TG_ROUTE_7 = None
+TG_ROUTERS = {
+    1: -1001943728686,
+    2: -1001887757924,
+    3: -1001731361700,
+    4: -1001984367295,
+    5: -1001897362925,
+    6: -1001727560908,
+    7: -1001962668626
+}
 
 ADMIN_IDS = [
     805875522

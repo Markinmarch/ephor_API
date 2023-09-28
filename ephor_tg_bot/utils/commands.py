@@ -21,6 +21,10 @@ admin_commands = [
     BotCommand(
         command = 'create_task',
         description = 'Создать задание'
+    ),
+    BotCommand(
+        command = 'test',
+        description = 'Тест-команда'
     )
 ]
 

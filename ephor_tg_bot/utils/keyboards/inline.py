@@ -6,8 +6,30 @@ authorization_button = InlineKeyboardMarkup(
     inline_keyboard = [
         [
             InlineKeyboardButton(
-                text = 'Отправить ',
+                text = 'Отправить',
                 callback_data = 'authorization'
+            )
+        ]
+    ]
+)
+
+take_task = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [
+            InlineKeyboardButton(
+                text = 'Взять в работу',
+                callback_data = 'take_task'
+            )
+        ]
+    ]
+)
+
+ready_task = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [
+            InlineKeyboardButton(
+                text = 'Готово',
+                callback_data = 'ready_task'
             )
         ]
     ]

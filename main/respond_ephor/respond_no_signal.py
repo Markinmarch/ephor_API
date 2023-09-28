@@ -11,14 +11,14 @@ class RespondErrorSIGNAL(RequestsServer):
 
     def __init__(self):
         super().__init__()
-        self.coins = self.request_state(
+        self.signal = self.request_state(
             path = PATH['state'],
             action = ACTION['read']
         )
 
     @property
     def get_automat_error_SIGNAL(self):
-        automats_signal_error = [param for param in self.coins['data'] if param['automat_state'] == STATE['no connect']]
+        automats_signal_error = [param for param in self.signal['data'] if param['automat_state'] == STATE['no connect']]
         return automats_signal_error
         
     @property

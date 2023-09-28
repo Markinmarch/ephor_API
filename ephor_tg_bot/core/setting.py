@@ -21,5 +21,5 @@ bot = Bot(
 dp = Dispatcher()
 
 async def main_bot() -> None:
-    from ephor_tg_bot import account
+    from ephor_tg_bot import app
     await dp.start_polling(bot)
