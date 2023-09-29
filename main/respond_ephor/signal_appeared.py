@@ -2,7 +2,7 @@ import logging
 import json
 
 
-from main.respond_ephor.respond_no_signal import RespondErrorSIGNAL
+from main.respond_ephor.respond_no_signal import RespondErrorSIGNAL, RequestsServer
 from main.respond_ephor.send_error import send_message
 
 
@@ -24,11 +24,19 @@ class StatusSignalOK(RespondErrorSIGNAL):
             return comparison_list
         except FileNotFoundError:
             return None
-
+    
+    @property
+    def get_appeared_signal_automat(self) -> list:
+        try:
+            for appeared_signal_id in self.check_signal:
+                return [param for param in self.signal['data'] if param['automat_id'] == appeared_signal_id]
+        except TypeError:
+            return None
+        
     @property
     def get_signal(self) -> list:
         signal_appeared_list = []
-        for params in self.check_signal:
+        for params in self.get_appeared_signal_automat:
             automat_param = {
                 'id': params['automat_id'],
                 'model': params['model_name'],
@@ -42,12 +50,15 @@ class StatusSignalOK(RespondErrorSIGNAL):
 
     @property
     def listen_signal_appeared(self):
-        for param in self.get_signal:
-            message = (
-                f'Автомат № {param["id"]}\n'
-                f'{param["adress"]}\n'
-                f'{param["point"]} --> {param["name"]}\n'
-                f'{param["info"]}'
-                ),
-            logging.info(f'Автомат № {param["id"]}: {param["info"]}')
-            # send_message(message)
+        if self.get_appeared_signal_automat == None:
+            return None
+        else:
+            for param in self.get_signal:
+                message = (
+                    f'Автомат № {param["id"]}\n'
+                    f'{param["adress"]}\n'
+                    f'{param["point"]} --> {param["name"]}\n'
+                    f'{param["info"]}'
+                    ),
+                logging.info(f'Автомат № {param["id"]}: {param["info"]}')
+                # send_message(message)
