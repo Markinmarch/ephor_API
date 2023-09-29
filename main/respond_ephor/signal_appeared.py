@@ -21,15 +21,12 @@ class StatusSignalOK(RespondErrorSIGNAL):
                 old_ids = json.load(file)
             signal_error_ids = [ids['automat_id'] for ids in self.get_automat_error_SIGNAL]
             comparison_list = [ids for ids in old_ids if ids not in signal_error_ids]
-            if comparison_list == []:
-                pass
-            else:
-                return comparison_list
+            return comparison_list
         except FileNotFoundError:
             return None
 
     @property
-    def get_params(self) -> list:
+    def get_signal(self) -> list:
         signal_appeared_list = []
         for params in self.check_signal:
             automat_param = {
@@ -38,19 +35,19 @@ class StatusSignalOK(RespondErrorSIGNAL):
                 'adress': params['point_adress'],
                 'point': params['point_comment'],
                 'name': params['point_name'],
-                'error': 'Автомат вышел на сявзь!'
+                'info': 'Автомат вышел на сявзь!'
             }
             signal_appeared_list.append(automat_param)
         return signal_appeared_list  
 
     @property
     def listen_signal_appeared(self):
-        for param in self.get_params:
+        for param in self.get_signal:
             message = (
                 f'Автомат № {param["id"]}\n'
                 f'{param["adress"]}\n'
                 f'{param["point"]} --> {param["name"]}\n'
-                f'{param["error"]}'
+                f'{param["info"]}'
                 ),
-            logging.info(f'Автомат № {param["id"]}: {param["error"]}')
-            send_message(message)
+            logging.info(f'Автомат № {param["id"]}: {param["info"]}')
+            # send_message(message)

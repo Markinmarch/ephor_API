@@ -3,7 +3,7 @@ import json
 import logging
 
 
-from main.core.config import STATE, PATH, ACTION, FILTER, ERRORS
+from main.core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
 from main.request_ephor.request_to_server import RequestsServer
 from main.respond_ephor.send_error import send_message
 
@@ -73,22 +73,30 @@ class RespondError(RequestsServer):
         return merge_list
 
     @property
-    def prepare_params(self):
+    def filter_sales(self):
         now_hour = datetime.datetime.now().hour
         weekends = [5, 6]
         now_day = datetime.datetime.today().weekday()
         for param in self.merge_params:
             if param['error'] in ERRORS and 9 <= now_hour <= 13 and now_day not in weekends:
                 return None
+            elif SPEC_ERROR in param['error']:
+                return None
             elif param['error'] not in ERRORS:
                 return self.merge_params
-            
+
     @property
     def listen_errors(self):
-        if self.prepare_params == None:
+        ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
+        with open(
+            file = 'main/respond_ephor/ids_errors/errors_id.json',
+            mode = 'w+'
+        ) as file:
+            json.dump(ids_automat_ERROR, file) 
+        if self.filter_sales == None:
             return None
         else:
-            for error_automat in self.prepare_params:
+            for error_automat in self.filter_sales:
                 message = (
                     f'Автомат № {error_automat["id"]}\n'
                     f'{error_automat["adress"]}\n'
@@ -96,10 +104,4 @@ class RespondError(RequestsServer):
                     f'{error_automat["error"]}'
                     ),
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-                send_message(message)
-                ids_automat_COINS =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
-                with open(
-                    file = 'main/respond_ephor/ids_errors/errors_id.json',
-                    mode = 'w+'
-                ) as file:
-                    json.dump(ids_automat_COINS, file)        
+                send_message(message)       
