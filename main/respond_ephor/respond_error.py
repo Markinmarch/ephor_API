@@ -87,12 +87,6 @@ class RespondError(RequestsServer):
 
     @property
     def listen_errors(self):
-        ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
-        with open(
-            file = 'main/respond_ephor/ids_errors/errors_id.json',
-            mode = 'w+'
-        ) as file:
-            json.dump(ids_automat_ERROR, file) 
         if self.filter_sales == None:
             return None
         else:
@@ -105,3 +99,9 @@ class RespondError(RequestsServer):
                     ),
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
                 send_message(message)       
+        ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
+        with open(
+            file = 'main/respond_ephor/ids_errors/errors_id.json',
+            mode = 'w+'
+        ) as file:
+            json.dump(ids_automat_ERROR, file)
