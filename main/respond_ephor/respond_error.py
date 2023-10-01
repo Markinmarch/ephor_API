@@ -98,7 +98,7 @@ class RespondError(RequestsServer):
                     f'{error_automat["error"]}'
                     ),
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-                send_message(message)       
+                # send_message(message)       
         ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
         with open(
             file = 'main/respond_ephor/ids_errors/errors_id.json',
