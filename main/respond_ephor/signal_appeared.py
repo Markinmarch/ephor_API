@@ -2,7 +2,7 @@ import logging
 import json
 
 
-from main.respond_ephor.respond_no_signal import RespondErrorSIGNAL, RequestsServer
+from main.respond_ephor.respond_no_signal import RespondErrorSIGNAL
 from main.respond_ephor.send_error import send_message
 
 
@@ -28,8 +28,7 @@ class StatusSignalOK(RespondErrorSIGNAL):
     @property
     def get_appeared_signal_automat(self) -> list:
         try:
-            for appeared_signal_id in self.check_signal:
-                return [param for param in self.signal['data'] if param['automat_id'] == appeared_signal_id]
+            return [param for param in self.signal['data'] if param['automat_id'] in self.check_signal]
         except TypeError:
             return None
         
