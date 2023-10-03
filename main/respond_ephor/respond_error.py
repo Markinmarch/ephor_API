@@ -77,19 +77,17 @@ class RespondError(RequestsServer):
         now_hour = datetime.datetime.now().hour
         weekends = [5, 6]
         now_day = datetime.datetime.today().weekday()
+        new_filter_list = []
         for param in self.merge_params:
             if param['error'] in ERRORS and 9 <= now_hour <= 13 and now_day not in weekends:
                 return None
-            elif SPEC_ERROR in param['error']:
-                return None
-            elif param['error'] not in ERRORS:
-                return self.merge_params
+            if param['error'] not in ERRORS and SPEC_ERROR not in param['error']:
+                new_filter_list.append(param)
+        return new_filter_list
 
     @property
     def listen_errors(self):
-        if self.filter_sales == None:
-            return None
-        else:
+        try:
             for error_automat in self.filter_sales:
                 message = (
                     f'Автомат № {error_automat["id"]}\n'
@@ -98,10 +96,12 @@ class RespondError(RequestsServer):
                     f'{error_automat["error"]}'
                     ),
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-                # send_message(message)
+                send_message(message)
+        except TypeError:
+            None
         ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
         with open(
             file = 'main/respond_ephor/ids_errors/errors_id.json',
             mode = 'w+'
         ) as file:
-            json.dump(ids_automat_ERROR, file)    
+            json.dump(ids_automat_ERROR, file) 

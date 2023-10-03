@@ -60,4 +60,4 @@ class StatusSignalOK(RespondErrorSIGNAL):
                     f'{param["info"]}'
                     ),
                 logging.info(f'Автомат № {param["id"]}: {param["info"]}')
-                # send_message(message)
+                send_message(message)
