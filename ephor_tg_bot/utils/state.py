@@ -5,8 +5,8 @@ class UserForm(StatesGroup):
     name = State()
 
 class TasksForm(StatesGroup):
-    status = State()
-    error = State()
+    route = State()
+    task = State()
 
 class InspectionRouts(StatesGroup):
     user_ids: list = State()

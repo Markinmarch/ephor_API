@@ -34,3 +34,14 @@ ready_task = InlineKeyboardMarkup(
         ]
     ]
 )
+
+send_task = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [
+            InlineKeyboardButton(
+                text = 'Отправить',
+                callback_data = 'send_task'
+            )
+        ]
+    ]
+)
