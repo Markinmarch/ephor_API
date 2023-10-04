@@ -33,13 +33,13 @@ class Users(Bot_tables_DB):
         self.conn.commit()
         logging.info(f'New user -- id: {user_id} -- name: {user_name} -- has been added')
 
-    def select_user(
+    def select_name(
         self,
         user_id: int
     ) -> tuple:
         self.cur.execute(
             '''
-            SELECT * FROM users
+            SELECT user_name FROM users
             WHERE id = ?
             ''',
             (user_id,)
