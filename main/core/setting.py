@@ -20,6 +20,6 @@ def main():
             respond_ephor.respond_no_signal.RespondErrorSIGNAL().listen_signal_error
             time.sleep(60)
         except:
-            logging.info('--- Server or web has been breack, please whait to connect ---')
-            time.sleep(600)
+            # logging.info('--- Server or web has been breack, please whait to connect ---')
+            time.sleep(180)
             continue
