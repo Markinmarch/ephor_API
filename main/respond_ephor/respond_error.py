@@ -9,21 +9,41 @@ from main.respond_ephor.send_error import send_message
 
 
 class RespondError(RequestsServer):
-
+    '''
+    Объект осуществляет получение и обработку данных 
+    после GET-запроса на сервер в понятный читабельный вид.
+    На выходе имеем данные по общим ошибкам в системе Эфор.
+    Наследуется объект RequestServer
+    '''
     def __init__(self):
         super().__init__()
-        self.state = self.request_state(
+        self.state = self.basic_request(
             path = PATH['state'],
             action = ACTION['read']
         )
 
     @property
-    def get_params_automat_ERROR(self):
+    def get_params_automat_ERROR(self) -> list:
+        '''
+        Метод выбирает из полученных данных после GET-запроса без фильрации
+        параметры, у которых на сервере параметр "automat_state" равен параметру
+        STATE["error"], равный нулю (0). Таким образом мы получаем список данных
+        с автоматами, которые находятся в ошибке.
+        '''
         automats_ERROR = [param for param in self.state['data'] if param['automat_state'] == STATE['error']]
         return automats_ERROR
 
     @property
     def comparison_error_ids(self):
+        '''
+        Метод считывает идентификаторы (id) автоматов из файла "errors_id.json" 
+        и сравнивает их с идетификаторами, которые берёт из нового списка
+        обработанных данных метода "get_params_automat_ERROR". Если файла
+        "errors_id.json" нет, то он просто возвращает список метода
+        "get_params_automat_ERRORS". Если файл имеется, тогда при наличии
+        новых идентификаторов из нового списка - возвращается список с данными,
+        имеющие новые идетификаторы.
+        '''
         try:
             with open(
                 file = 'main/respond_ephor/ids_errors/errors_id.json',
@@ -37,10 +57,17 @@ class RespondError(RequestsServer):
             return self.get_params_automat_ERROR
     
     @property
-    def get_params(self):
+    def get_params(self) -> list:
+        '''
+        Метод выборочно отбирает параметры каждого автомата из списка,
+        полученного от метода "comparison_error_ids" и присваивает им
+        отдельный ключ. Возвращает список с выборочными параметрами по
+        каждому автомату, выпавшему в ошибку.
+        '''
         errors_automat_list = []
         for params in self.comparison_error_ids:
             automat_param = {
+                # выборочные параметры каждого автомата
                 'id': params['automat_id'],
                 'model': params['model_name'],
                 'adress': params['point_adress'],
@@ -51,7 +78,15 @@ class RespondError(RequestsServer):
         return errors_automat_list            
 
     @property
-    def check_automat_errors(self) -> list:
+    def get_automat_errors(self) -> list:
+        '''
+        Метод реализует получение описания ошибки каждого автомата
+        выпавшего в ошибку посредством использования метода 
+        "request_params" из объекта "RequestsServer" с фильтрацией
+        данных по параметру "automat_id"(FILTER["automat"]). Параметр
+        идентификатора каждого автомата взят из списка метода "get_params".
+        Возвращает список ошибок каждого автомата.
+        '''
         error_descriptions = []
         for params in self.get_params:
             get_error = self.request_params(
@@ -67,13 +102,23 @@ class RespondError(RequestsServer):
     
     @property
     def merge_params(self):
+        '''
+        Метод реализует слияние выборочных параметров каждого автомата выпавшего
+        в ошибку и их описание ошибки.
+        '''
         merge_list = []
-        for params_dict, params_errors in zip(self.get_params, self.check_automat_errors):
+        for params_dict, params_errors in zip(self.get_params, self.get_automat_errors):
             merge_list.append(params_dict | params_errors)
         return merge_list
 
     @property
     def filter_sales(self):
+        '''
+        Метод реализует игнорирование ошибки о состоянии автомата,
+        которые долго не продавали в определённое время суток,
+        а так же игнорирование ошибки, которая свидетельствует о том,
+        что оплата по безналу не прошла.
+        '''
         now_hour = datetime.datetime.now().hour
         weekends = [5, 6]
         now_day = datetime.datetime.today().weekday()
@@ -86,7 +131,13 @@ class RespondError(RequestsServer):
         return new_filter_list
 
     @property
-    def listen_errors(self):
+    def send_errors(self) -> None:
+        '''
+        Метод формирует тесктовое сообщение для отправки через
+        метод "send_message" в телеграм-канал и реализует вывод
+        лога в терминал. Затем идентификаторы автоматов
+        перезаписывает в новый файл "errors_ids.json"
+        '''
         try:
             for error_automat in self.filter_sales:
                 message = (

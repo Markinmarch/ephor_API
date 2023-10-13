@@ -2,11 +2,11 @@ import logging
 import json
 
 
-from main.respond_ephor.respond_no_signal import RespondErrorSIGNAL
+from main.respond_ephor.respond_no_signal import RespondErrorSignal
 from main.respond_ephor.send_error import send_message
 
 
-class StatusSignalOK(RespondErrorSIGNAL):
+class StatusSignalOK(RespondErrorSignal):
 
     def __init__(self):
         super().__init__()
@@ -42,13 +42,13 @@ class StatusSignalOK(RespondErrorSIGNAL):
                 'adress': params['point_adress'],
                 'point': params['point_comment'],
                 'name': params['point_name'],
-                'info': 'Автомат вышел на сявзь!'
+                'info': 'Автомат вышел на связь!'
             }
             signal_appeared_list.append(automat_param)
         return signal_appeared_list  
 
     @property
-    def listen_signal_appeared(self):
+    def send_signal_appeared(self):
         if self.get_appeared_signal_automat == None:
             return None
         else:
