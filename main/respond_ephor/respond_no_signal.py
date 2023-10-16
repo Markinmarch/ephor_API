@@ -1,8 +1,9 @@
 import logging
 import json
+import datetime
 
 
-from main.core.config import STATE, PATH, ACTION
+from main.core.config import STATE, PATH, ACTION, ERRORS, SIGNAL_ERROR
 from main.request_ephor.request_to_server import RequestsServer
 from main.respond_ephor.send_error import send_message
 
@@ -72,10 +73,25 @@ class RespondErrorSignal(RequestsServer):
                 'adress': params['point_adress'],
                 'point': params['point_comment'],
                 'name': params['point_name'],
-                'error': 'Нет связи с автоматом!.'
+                'error': SIGNAL_ERROR
             }
             signal_error_list.append(automat_param)
         return signal_error_list  
+    
+    @property
+    def filter_signal_error(self):
+        '''
+        Метод реализует игнорирование ошибки о состоянии автомата,
+        у которых пропала связь в период с 22 до 8 утра.
+        '''
+        now_hour = datetime.datetime.now().hour
+        new_filter_list = []
+        for param in self.get_params:
+            if 8 <= now_hour <= 22:
+                new_filter_list.append(param)
+            else:
+                None
+        return new_filter_list
 
     @property
     def send_signal_error(self) -> None:
@@ -85,7 +101,7 @@ class RespondErrorSignal(RequestsServer):
         лога в терминал. Затем идентификаторы автоматов
         перезаписывает в новый файл "signal_error_ids.json"
         '''
-        for error_automat in self.get_params:
+        for error_automat in self.filter_signal_error:
             message = (
                 f'Автомат № {error_automat["id"]}\n'
                 f'{error_automat["adress"]}\n'
