@@ -1,5 +1,6 @@
 import logging
 import json
+from typing import Any
 
 
 from main.respond_ephor.respond_no_signal import RespondErrorSignal
@@ -7,12 +8,26 @@ from main.respond_ephor.send_error import send_message
 
 
 class StatusSignalOK(RespondErrorSignal):
-
-    def __init__(self):
+    '''
+    Объект осуществляет получение, обработку данных
+    и преобразование в понятный читабельный вид после
+    GET-запроса. На выходе имеем данные по автоматам,
+    у которых появился сигнал связи.
+    Наследуется объект RespondErrorSignal.
+    '''
+    def __init__(self) -> None:
         super().__init__()
 
     @property
-    def check_signal(self):
+    def check_signal(self) -> (list[Any] | None):
+        '''
+        Метод считывает идентификаторы (id) автоматов из файла "signal_error_ids.json" 
+        и сравнивает их с идетификаторами, которые берёт из нового списка
+        обработанных данных метода "get_automat_error_SIGNAL". Если файла
+        "signal_error_ids.json" нет, то он возвращает "None". Если файл имеется,
+        тогда при отсутствии идентификаторов из старого списка в запрошенном - возвращает
+        идентификаторы, которые отсутствуют в новом списке идентификаторов.
+        '''
         try:
             with open(
                 file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
@@ -26,14 +41,24 @@ class StatusSignalOK(RespondErrorSignal):
             return None
     
     @property
-    def get_appeared_signal_automat(self) -> list:
+    def get_appeared_signal_automat(self) -> (list[Any] | None):
+        '''
+        Из метода "check_signal" получает идентификаторы и по ним
+        получает параметры автоматов, которые вышли на связь.
+        '''
         try:
             return [param for param in self.signal['data'] if param['automat_id'] in self.check_signal]
         except TypeError:
             return None
         
     @property
-    def get_signal(self) -> list:
+    def get_signal_appeared(self) -> list:
+        '''
+        Метод выборочно отбирает параметры каждого автомата из списка,
+        полученного от метода "get_appeared_signal_automat" и присваивает им
+        отдельный ключ. Возвращает список с выборочными параметрами по
+        каждому автомату, который вышел на связь.
+        '''
         signal_appeared_list = []
         for params in self.get_appeared_signal_automat:
             automat_param = {
@@ -48,11 +73,16 @@ class StatusSignalOK(RespondErrorSignal):
         return signal_appeared_list  
 
     @property
-    def send_signal_appeared(self):
+    def send_signal_appeared(self) -> None:
+        '''
+        Метод формирует тесктовое сообщение для отправки через
+        метод "send_message" в телеграм-канал и реализует вывод
+        лога в терминал.
+        '''
         if self.get_appeared_signal_automat == None:
             return None
         else:
-            for param in self.get_signal:
+            for param in self.get_signal_appeared:
                 message = (
                     f'Автомат № {param["id"]}\n'
                     f'{param["adress"]}\n'

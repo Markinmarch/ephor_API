@@ -16,7 +16,7 @@ class RespondErrorSignal(RequestsServer):
     у которых пропал сигнал.
     Наследуется объект RequestServer.
     '''
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.signal = self.basic_request(
             path = PATH['state'],
