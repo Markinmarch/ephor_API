@@ -82,12 +82,12 @@ class RespondErrorSignal(RequestsServer):
     def filter_signal_error(self):
         '''
         Метод реализует игнорирование ошибки о состоянии автомата,
-        у которых пропала связь в период с 22 до 8 утра.
+        у которых пропала связь в период с 20 до 8 утра.
         '''
         now_hour = datetime.datetime.now().hour
         new_filter_list = []
         for param in self.get_params:
-            if 8 <= now_hour < 22:
+            if 8 <= now_hour < 20:
                 new_filter_list.append(param)
             else:
                 return None
