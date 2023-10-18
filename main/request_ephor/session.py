@@ -1,5 +1,6 @@
 import time
-import requests
+# import requests
+import aiohttp
 
 
 from main.core.config import URL, PATH, LOGIN, PASSWORD
@@ -47,7 +48,48 @@ class Session:
             }
         self.headers: dict = {'Content-Type': 'application/json'}
 
-    def login(self, action):
+    # def login(self, action) -> str:
+    #     '''
+    #     Метод отправляет POST-запрос на сервер; в ответ
+    #     получает параметр PHPSESSIONID для дальнейшей
+    #     отправки GET-запросов. Выполяется вход пользователя 
+    #     в систему. Возвращает параметр PHPSESSIONID
+    #         Параметры:
+    #             action: str
+    #                 команда обработчика
+    #     '''
+    #     respond = requests.api.post(
+    #         url = self.url + self.path,
+    #         json = self.json,
+    #         headers = self.headers,
+    #         params = {
+    #             'action': action,
+    #             '_dc': self.id_request
+    #         },
+    #     )
+    #     return respond.headers.get('Set-Cookie').split('; ')[0]
+            
+    # def logout(self, action) -> int:
+    #     '''
+    #     Метод отправляет POST-запрос на сервер; 
+    #     Выполняется закрытие сесси и выход пользователя
+    #     их системы.
+    #         Параметры: 
+    #             action: str
+    #                 команда обработчика
+    #     '''
+    #     respond = requests.api.post(
+    #         url = self.url + self.path,
+    #         json = self.json,
+    #         headers = self.headers,
+    #         params = {
+    #             'action': action,
+    #             '_dc': self.id_request
+    #         }
+    #     )
+    #     return respond.status_code
+
+    async def login(self, action) -> str:
         '''
         Метод отправляет POST-запрос на сервер; в ответ
         получает параметр PHPSESSIONID для дальнейшей
@@ -57,18 +99,19 @@ class Session:
                 action: str
                     команда обработчика
         '''
-        respond = requests.api.post(
-            url = self.url + self.path,
-            json = self.json,
-            headers = self.headers,
-            params = {
-                'action': action,
-                '_dc': self.id_request
-            },
-        )
-        return respond.headers.get('Set-Cookie').split('; ')[0]
-            
-    def logout(self, action):
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                url = self.url + self.path,
+                json = self.json,
+                headers = self.headers,
+                params = {
+                    'action': action,
+                    '_dc': self.id_request
+                }
+            ) as respond:
+                return await respond.headers.get('Set-Cookie').split('; ')[0]
+
+    async def logout(self, action) -> int:
         '''
         Метод отправляет POST-запрос на сервер; 
         Выполняется закрытие сесси и выход пользователя
@@ -77,13 +120,14 @@ class Session:
                 action: str
                     команда обработчика
         '''
-        respond = requests.api.post(
-            url = self.url + self.path,
-            json = self.json,
-            headers = self.headers,
-            params = {
-                'action': action,
-                '_dc': self.id_request
-            }
-        )
-        return respond.status_code
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                url = self.url + self.path,
+                json = self.json,
+                headers = self.headers,
+                params = {
+                    'action': action,
+                    '_dc': self.id_request
+                }
+            ) as respond:
+                return await respond.status     

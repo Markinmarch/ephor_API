@@ -1,4 +1,6 @@
-import requests
+# import requests
+import asyncio
+import aiohttp
 from typing import Callable
 
 
@@ -29,8 +31,8 @@ class RequestsServer(Session):
         '''
         super().__init__()
         self.session: object = Session()
-        self.connect: Callable = self.session.login(action = ACTION['login']) 
-        self.disconnect: Callable = self.session.logout(action = ACTION['logout'])
+        self.connect: Callable = asyncio.run(self.session.login(action = ACTION['login']))
+        self.disconnect: Callable = asyncio.run(self.session.logout(action = ACTION['logout']))
         self.headers_request: dict = {
             'Content-Type': 'application/jso',
             'Host': 'erp.ephor.online',
@@ -38,10 +40,69 @@ class RequestsServer(Session):
             'Cookie': self.connect #здесь находится параметр PHPSESSIONID
         }
 
-    def basic_request(
-            self,
-            path,
-            action
+    # def basic_request(
+    #         self,
+    #         path,
+    #         action
+    # ) -> list:
+    #     '''
+    #     Метод отправляет GET-запрос для получения
+    #     данных с сервера без фильтрации. Возвраащет
+    #     список необработанных данных.
+    #     Параметры:
+    #         path: str
+    #             путь к обработчику команды
+    #         action: str
+    #             команда обработчика
+    #     '''
+    #     respond = requests.api.get(
+    #         url = self.url + path,
+    #         params = {
+    #             'action': action,
+    #             '_dc': self.id_request
+    #         },
+    #         headers = self.headers_request
+    #     )
+    #     self.disconnect
+    #     return respond.json()
+    
+    # def request_params(
+    #     self,
+    #     path: str,
+    #     action: str,
+    #     request_filter: str,
+    #     id: int
+    # ) -> list:
+    #     '''
+    #     Метод отправляет GET-запрос для получения
+    #     данных с сервера c фильтрацией данных.
+    #     Возвраащет список необработанных данных.
+    #     Параметры:
+    #         path: str
+    #             путь к обработчику команды
+    #         action: str
+    #             команда обработчика
+    #         request_filter: str
+    #             запрос по фильтру
+    #         id: int
+    #             идентификатор запроса по фильтру
+    #     '''
+    #     respond = requests.api.get(
+    #         url = self.url + path,
+    #         params = {
+    #             'action': action,
+    #             '_dc': self.id_request,
+    #             'filter': ('[{"property": "%s", "value": %s}]' %(request_filter, id))
+    #         },
+    #         headers = self.headers_request
+    #     )
+    #     self.disconnect
+    #     return respond.json()
+
+    async def basic_request(
+        self,
+        path,
+        action
     ) -> list:
         '''
         Метод отправляет GET-запрос для получения
@@ -53,18 +114,19 @@ class RequestsServer(Session):
             action: str
                 команда обработчика
         '''
-        respond = requests.api.get(
+        async with aiohttp.ClientSession() as request:
+            async with request.get(
             url = self.url + path,
             params = {
                 'action': action,
                 '_dc': self.id_request
             },
             headers = self.headers_request
-        )
-        self.disconnect
-        return respond.json()
+            ) as respond:
+                await self.disconnect
+                return await respond.json(content_type = 'text/html')
     
-    def request_params(
+    async def request_params(
         self,
         path: str,
         action: str,
@@ -85,14 +147,15 @@ class RequestsServer(Session):
             id: int
                 идентификатор запроса по фильтру
         '''
-        respond = requests.api.get(
-            url = self.url + path,
-            params = {
-                'action': action,
-                '_dc': self.id_request,
-                'filter': ('[{"property": "%s", "value": %s}]' %(request_filter, id))
-            },
-            headers = self.headers_request
-        )
-        self.disconnect
-        return respond.json()
+        async with aiohttp.ClientSession() as request:
+            async with request.get(
+                url = self.url + path,
+                params = {
+                    'action': action,
+                    '_dc': self.id_request,
+                    'filter': ('[{"property": "%s", "value": %s}]' %(request_filter, id))
+                },
+                headers = self.headers_request
+            ) as respond:
+                await self.disconnect
+                return await respond.json(content_type = 'text/html')
