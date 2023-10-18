@@ -47,7 +47,7 @@ class RespondErrorSignal(RequestsServer):
         имеющие новые идетификаторы.
         '''
         now_hour = datetime.datetime.now().hour
-        if 10 <= now_hour < 20:
+        if 8 <= now_hour < 20:
             try:
                 with open(
                     file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
