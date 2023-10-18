@@ -37,7 +37,8 @@ class RespondErrorSignal(RequestsServer):
     @property
     def comparison_signal_error_ids(self) -> list:
         '''
-        Метод считывает идентификаторы (id) автоматов из файла "signal_error_ids.json" 
+        Сначала метод проверяет диапазон времени для отправки этой ошибки, затем
+        метод считывает идентификаторы (id) автоматов из файла "signal_error_ids.json" 
         и сравнивает их с идетификаторами, которые берёт из нового списка
         обработанных данных метода "get_automat_error_SIGNAL". Если файла
         "signal_error_ids.json" нет, то он просто возвращает список метода
@@ -45,17 +46,21 @@ class RespondErrorSignal(RequestsServer):
         новых идентификаторов из нового списка - возвращается список с данными,
         имеющие новые идетификаторы.
         '''
-        try:
-            with open(
-                file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
-                mode = 'r'
-            ) as file:
-                old_ids = json.load(file)
-            comparison_list = [automat for automat in self.get_automat_error_SIGNAL if automat['automat_id'] not in old_ids]
-            return comparison_list     
-               
-        except FileNotFoundError:
-            return self.get_automat_error_SIGNAL
+        now_hour = datetime.datetime.now().hour
+        if 10 <= now_hour < 20:
+            try:
+                with open(
+                    file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
+                    mode = 'r'
+                ) as file:
+                    old_ids = json.load(file)
+                comparison_list = [automat for automat in self.get_automat_error_SIGNAL if automat['automat_id'] not in old_ids]
+                return comparison_list     
+                
+            except FileNotFoundError:
+                return self.get_automat_error_SIGNAL
+        else:
+            None
 
     @property
     def get_params(self) -> list:
@@ -79,21 +84,6 @@ class RespondErrorSignal(RequestsServer):
         return signal_error_list  
     
     @property
-    def filter_signal_error(self):
-        '''
-        Метод реализует игнорирование ошибки о состоянии автомата,
-        у которых пропала связь в период с 20 до 8 утра.
-        '''
-        now_hour = datetime.datetime.now().hour
-        new_filter_list = []
-        for param in self.get_params:
-            if 8 <= now_hour < 20:
-                new_filter_list.append(param)
-            else:
-                return None
-        return new_filter_list
-
-    @property
     def send_signal_error(self) -> None:
         '''
         Метод формирует тесктовое сообщение для отправки через
@@ -101,7 +91,7 @@ class RespondErrorSignal(RequestsServer):
         лога в терминал. Затем идентификаторы автоматов
         перезаписывает в новый файл "signal_error_ids.json"
         '''
-        for error_automat in self.filter_signal_error:
+        for error_automat in self.get_params:
             message = (
                 f'Автомат № {error_automat["id"]}\n'
                 f'{error_automat["adress"]}\n'
@@ -110,12 +100,10 @@ class RespondErrorSignal(RequestsServer):
                 ),
             logging.warning(f'Автомат № {error_automat["id"]}: {error_automat["error"]}')
             send_message(message)
-        if self.filter_signal_error != None:
-            ids_automat_NO_SIGNAL =  [ids['automat_id'] for ids in self.get_automat_error_SIGNAL]
-            with open(
-                file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
-                mode = 'w+'
-            ) as file:
-                json.dump(ids_automat_NO_SIGNAL, file)
-        else:
-            None
+        ids_automat_NO_SIGNAL =  [ids['automat_id'] for ids in self.get_automat_error_SIGNAL]
+        with open(
+            file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
+            mode = 'w+'
+        ) as file:
+            json.dump(ids_automat_NO_SIGNAL, file)
+

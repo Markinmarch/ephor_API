@@ -1,5 +1,6 @@
 import logging
 import json
+import datetime
 from typing import Any
 
 
@@ -21,25 +22,29 @@ class StatusSignalOK(RespondErrorSignal):
     @property
     def check_signal(self) -> (list[Any] | None):
         '''
-        Метод считывает идентификаторы (id) автоматов из файла "signal_error_ids.json" 
+        Сначала метод проверяет диапазон времени для отправки этой ошибки, затем
+        метод считывает идентификаторы (id) автоматов из файла "signal_error_ids.json" 
         и сравнивает их с идетификаторами, которые берёт из нового списка
         обработанных данных метода "get_automat_error_SIGNAL". Если файла
         "signal_error_ids.json" нет, то он возвращает "None". Если файл имеется,
         тогда при отсутствии идентификаторов из старого списка в запрошенном - возвращает
         идентификаторы, которые отсутствуют в новом списке идентификаторов.
         '''
-        try:
-            with open(
-                file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
-                mode = 'r'
-            ) as file:
-                old_ids = json.load(file)
-            signal_error_ids = [ids['automat_id'] for ids in self.get_automat_error_SIGNAL]
-            comparison_list = [ids for ids in old_ids if ids not in signal_error_ids]
-            return comparison_list
-        except FileNotFoundError:
-            return None
-    
+        now_hour = datetime.datetime.now().hour
+        if 10 <= now_hour < 20:
+            try:
+                with open(
+                    file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
+                    mode = 'r'
+                ) as file:
+                    old_ids = json.load(file)
+                signal_error_ids = [ids['automat_id'] for ids in self.get_automat_error_SIGNAL]
+                comparison_list = [ids for ids in old_ids if ids not in signal_error_ids]
+                return comparison_list
+            except FileNotFoundError:
+                return None
+        else:
+            None
     @property
     def get_appeared_signal_automat(self) -> (list[Any] | None):
         '''
@@ -70,7 +75,7 @@ class StatusSignalOK(RespondErrorSignal):
                 'info': 'Автомат вышел на связь!'
             }
             signal_appeared_list.append(automat_param)
-        return signal_appeared_list  
+        return signal_appeared_list
 
     @property
     def send_signal_appeared(self) -> None:
