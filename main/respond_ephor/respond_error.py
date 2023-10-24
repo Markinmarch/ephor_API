@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+import asyncio
 
 
 from main.core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
@@ -17,13 +18,14 @@ class RespondError(RequestsServer):
     '''
     def __init__(self):
         super().__init__()
-        self.state = self.basic_request(
-            path = PATH['state'],
-            action = ACTION['read']
+        self.state = asyncio.run(
+            self.basic_request(
+                path = PATH['state'],
+                action = ACTION['read']
+            )
         )
 
-    @property
-    def get_params_automat_ERROR(self) -> list:
+    async def get_params_automat_ERROR(self) -> list:
         '''
         Метод выбирает из полученных данных после GET-запроса без фильрации
         параметры, у которых на сервере параметр "automat_state" равен параметру
@@ -31,10 +33,9 @@ class RespondError(RequestsServer):
         с автоматами, которые находятся в ошибке.
         '''
         automats_ERROR = [param for param in self.state['data'] if param['automat_state'] == STATE['error']]
-        return automats_ERROR
+        return await automats_ERROR
 
-    @property
-    def comparison_error_ids(self):
+    async def comparison_error_ids(self) -> list:
         '''
         Метод считывает идентификаторы (id) автоматов из файла "errors_id.json" 
         и сравнивает их с идетификаторами, которые берёт из нового списка
@@ -50,14 +51,13 @@ class RespondError(RequestsServer):
                 mode = 'r'
             ) as file:
                 old_ids = json.load(file)
-            comparison_list = [automat for automat in self.get_params_automat_ERROR if automat['automat_id'] not in old_ids]
-            return comparison_list     
+            comparison_list = [automat for automat in await self.get_params_automat_ERROR() if automat['automat_id'] not in old_ids]
+            return await comparison_list     
                
         except FileNotFoundError:
-            return self.get_params_automat_ERROR
+            return await self.get_params_automat_ERROR()
     
-    @property
-    def get_params(self) -> list:
+    async def get_params(self) -> list:
         '''
         Метод выборочно отбирает параметры каждого автомата из списка,
         полученного от метода "comparison_error_ids" и присваивает им
@@ -65,7 +65,7 @@ class RespondError(RequestsServer):
         каждому автомату, выпавшему в ошибку.
         '''
         errors_automat_list = []
-        for params in self.comparison_error_ids:
+        async for params in await self.comparison_error_ids():
             automat_param = {
                 # выборочные параметры каждого автомата
                 'id': params['automat_id'],
@@ -74,11 +74,10 @@ class RespondError(RequestsServer):
                 'point': params['point_comment'],
                 'name': params['point_name']
             }
-            errors_automat_list.append(automat_param)
-        return errors_automat_list            
+            await errors_automat_list.append(automat_param)
+        return await errors_automat_list            
 
-    @property
-    def get_automat_errors(self) -> list:
+    async def get_automat_errors(self) -> list:
         '''
         Метод реализует получение описания ошибки каждого автомата
         выпавшего в ошибку посредством использования метода 
@@ -88,31 +87,30 @@ class RespondError(RequestsServer):
         Возвращает список ошибок каждого автомата.
         '''
         error_descriptions = []
-        for params in self.get_params:
-            get_error = self.request_params(
-                PATH['error'],
-                ACTION['read'],
-                FILTER['automat'],
-                params['id']
+        async for params in self.get_params():
+            get_error = asyncio.run(
+                self.request_params(
+                    PATH['error'],
+                    ACTION['read'],
+                    FILTER['automat'],
+                    params['id']
+                )
             )
-            for error in get_error['data']:
+            async for error in await get_error['data']:
                 error_descriptions.append({'error': error['description']})
-        return error_descriptions
+        return await error_descriptions
 
-    
-    @property
-    def merge_params(self):
+    async def merge_params(self):
         '''
         Метод реализует слияние выборочных параметров каждого автомата выпавшего
         в ошибку и их описание ошибки.
         '''
         merge_list = []
-        for params_dict, params_errors in zip(self.get_params, self.get_automat_errors):
+        async for params_dict, params_errors in zip(await self.get_params(), await self.get_automat_errors()):
             merge_list.append(params_dict | params_errors)
-        return merge_list
+        return await merge_list
 
-    @property
-    def filter_sales(self):
+    async def filter_sales(self):
         '''
         Метод реализует игнорирование ошибки о состоянии автомата,
         которые долго не продавали в определённое время суток,
@@ -123,15 +121,14 @@ class RespondError(RequestsServer):
         weekends = [5, 6]
         now_day = datetime.datetime.today().weekday()
         new_filter_list = []
-        for param in self.merge_params:
+        async for param in await self.merge_params():
             if param['error'] in ERRORS and 9 <= now_hour <= 13 and now_day not in weekends:
-                return None
+                return await None
             if param['error'] not in ERRORS and SPEC_ERROR not in param['error']:
                 new_filter_list.append(param)
-        return new_filter_list
+        return await new_filter_list
 
-    @property
-    def send_errors(self) -> None:
+    async def send_errors(self) -> None:
         '''
         Метод формирует тесктовое сообщение для отправки через
         метод "send_message" в телеграм-канал и реализует вывод
@@ -139,7 +136,7 @@ class RespondError(RequestsServer):
         перезаписывает в новый файл "errors_ids.json"
         '''
         try:
-            for error_automat in self.filter_sales:
+            async for error_automat in await self.filter_sales():
                 message = (
                     f'Автомат № {error_automat["id"]}\n'
                     f'{error_automat["adress"]}\n'
@@ -147,12 +144,12 @@ class RespondError(RequestsServer):
                     f'{error_automat["error"]}'
                     ),
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-                send_message(message)
+                # send_message(message)
         except TypeError:
-            None
+            return None
         ids_automat_ERROR =  [ids['automat_id'] for ids in self.get_params_automat_ERROR]
-        with open(
+        async with open(
             file = 'main/respond_ephor/ids_errors/errors_id.json',
             mode = 'w+'
         ) as file:
-            json.dump(ids_automat_ERROR, file) 
+            await json.dump(ids_automat_ERROR, file) 

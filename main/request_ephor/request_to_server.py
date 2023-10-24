@@ -123,7 +123,7 @@ class RequestsServer(Session):
             },
             headers = self.headers_request
             ) as respond:
-                await self.disconnect
+                self.disconnect
                 return await respond.json(content_type = 'text/html')
     
     async def request_params(
@@ -157,5 +157,5 @@ class RequestsServer(Session):
                 },
                 headers = self.headers_request
             ) as respond:
-                await self.disconnect
+                self.disconnect
                 return await respond.json(content_type = 'text/html')

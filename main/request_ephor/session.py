@@ -109,7 +109,7 @@ class Session:
                     '_dc': self.id_request
                 }
             ) as respond:
-                return await respond.headers.get('Set-Cookie').split('; ')[0]
+                return respond.headers.get('Set-Cookie').split('; ')[0]
 
     async def logout(self, action) -> int:
         '''
@@ -130,4 +130,4 @@ class Session:
                     '_dc': self.id_request
                 }
             ) as respond:
-                return await respond.status     
+                return respond.status     
