@@ -106,4 +106,3 @@ class RespondErrorSignal(RequestsServer):
             mode = 'w+'
         ) as file:
             json.dump(ids_automat_NO_SIGNAL, file)
-
