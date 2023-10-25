@@ -1,5 +1,4 @@
 import time
-# import requests
 import aiohttp
 
 
@@ -42,52 +41,11 @@ class Session:
         self.time_zone: int = 3
         self.id_request: int = int(time.time())
         self.json: dict = {
-                'login': self.user_login,
-                'password': self.user_password,
-                'time_zone': self.time_zone
+            'login': self.user_login,
+            'password': self.user_password,
+            'time_zone': self.time_zone
             }
         self.headers: dict = {'Content-Type': 'application/json'}
-
-    # def login(self, action) -> str:
-    #     '''
-    #     Метод отправляет POST-запрос на сервер; в ответ
-    #     получает параметр PHPSESSIONID для дальнейшей
-    #     отправки GET-запросов. Выполяется вход пользователя 
-    #     в систему. Возвращает параметр PHPSESSIONID
-    #         Параметры:
-    #             action: str
-    #                 команда обработчика
-    #     '''
-    #     respond = requests.api.post(
-    #         url = self.url + self.path,
-    #         json = self.json,
-    #         headers = self.headers,
-    #         params = {
-    #             'action': action,
-    #             '_dc': self.id_request
-    #         },
-    #     )
-    #     return respond.headers.get('Set-Cookie').split('; ')[0]
-            
-    # def logout(self, action) -> int:
-    #     '''
-    #     Метод отправляет POST-запрос на сервер; 
-    #     Выполняется закрытие сесси и выход пользователя
-    #     их системы.
-    #         Параметры: 
-    #             action: str
-    #                 команда обработчика
-    #     '''
-    #     respond = requests.api.post(
-    #         url = self.url + self.path,
-    #         json = self.json,
-    #         headers = self.headers,
-    #         params = {
-    #             'action': action,
-    #             '_dc': self.id_request
-    #         }
-    #     )
-    #     return respond.status_code
 
     async def login(self, action) -> str:
         '''
@@ -109,7 +67,7 @@ class Session:
                     '_dc': self.id_request
                 }
             ) as respond:
-                return respond.headers.get('Set-Cookie').split('; ')[0]
+                return await respond.headers.get('Set-Cookie').split('; ')[0]
 
     async def logout(self, action) -> int:
         '''
@@ -130,4 +88,4 @@ class Session:
                     '_dc': self.id_request
                 }
             ) as respond:
-                return respond.status     
+                return await respond.status     

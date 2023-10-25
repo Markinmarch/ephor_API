@@ -1,13 +1,8 @@
-# import requests
-import asyncio
 import aiohttp
-from typing import Callable
-from aiogram.client.session.aiohttp import AiohttpSession
+from typing import Coroutine
 
-session = AiohttpSession().api.api_url()
 
-from main.request_ephor.session import Session
-from main.core.config import ACTION
+from main.api.request_ephor.session import Session
 
 
 class RequestsServer(Session):
@@ -16,7 +11,11 @@ class RequestsServer(Session):
     для получения актуальных данных. Наследуется объект
     Session
     '''
-    def __init__(self):
+    def __init__(
+        self,
+        connection: Coroutine,
+        disconnection: Coroutine
+    ):
         '''
         Устанавливает все необходимые атрибуты для объекта RequestsServer
             Параметры:
@@ -29,12 +28,10 @@ class RequestsServer(Session):
                     выход из системы сервера
                 headers_request: dict
                     параметры REST-запроса
-                
         '''
         super().__init__()
-        self.session: object = Session()
-        self.connect: Callable = asyncio.run(self.session.login(action = ACTION['login']))
-        self.disconnect: Callable = asyncio.run(self.session.logout(action = ACTION['logout']))
+        self.connect = connection
+        self.disconnect = disconnection
         self.headers_request: dict = {
             'Content-Type': 'application/jso',
             'Host': 'erp.ephor.online',
@@ -42,69 +39,10 @@ class RequestsServer(Session):
             'Cookie': self.connect #здесь находится параметр PHPSESSIONID
         }
 
-    # def basic_request(
-    #         self,
-    #         path,
-    #         action
-    # ) -> list:
-    #     '''
-    #     Метод отправляет GET-запрос для получения
-    #     данных с сервера без фильтрации. Возвраащет
-    #     список необработанных данных.
-    #     Параметры:
-    #         path: str
-    #             путь к обработчику команды
-    #         action: str
-    #             команда обработчика
-    #     '''
-    #     respond = requests.api.get(
-    #         url = self.url + path,
-    #         params = {
-    #             'action': action,
-    #             '_dc': self.id_request
-    #         },
-    #         headers = self.headers_request
-    #     )
-    #     self.disconnect
-    #     return respond.json()
-    
-    # def request_params(
-    #     self,
-    #     path: str,
-    #     action: str,
-    #     request_filter: str,
-    #     id: int
-    # ) -> list:
-    #     '''
-    #     Метод отправляет GET-запрос для получения
-    #     данных с сервера c фильтрацией данных.
-    #     Возвраащет список необработанных данных.
-    #     Параметры:
-    #         path: str
-    #             путь к обработчику команды
-    #         action: str
-    #             команда обработчика
-    #         request_filter: str
-    #             запрос по фильтру
-    #         id: int
-    #             идентификатор запроса по фильтру
-    #     '''
-    #     respond = requests.api.get(
-    #         url = self.url + path,
-    #         params = {
-    #             'action': action,
-    #             '_dc': self.id_request,
-    #             'filter': ('[{"property": "%s", "value": %s}]' %(request_filter, id))
-    #         },
-    #         headers = self.headers_request
-    #     )
-    #     self.disconnect
-    #     return respond.json()
-
     async def basic_request(
         self,
-        path,
-        action
+        path: str,
+        action: str
     ) -> list:
         '''
         Метод отправляет GET-запрос для получения

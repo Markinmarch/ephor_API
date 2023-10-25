@@ -4,7 +4,7 @@ from typing import Callable
 
 
 from main.core.config import BOT_TOKEN, CHANNEL_ID
-from ephor_tg_bot.core.setting import bot
+# from ephor_tg_bot.core.setting import bot
 
 
 def send_message(message: str) -> Callable:

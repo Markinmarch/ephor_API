@@ -2,11 +2,12 @@ import datetime
 import json
 import logging
 import asyncio
+from typing import Coroutine
 
 
 from main.core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
-from main.request_ephor.request_to_server import RequestsServer
-from main.respond_ephor.send_error import send_message
+from main.api.request_ephor.request_to_server import RequestsServer
+from main.api.respond_ephor.send_error import send_message
 
 
 class RespondError(RequestsServer):
@@ -16,14 +17,12 @@ class RespondError(RequestsServer):
     На выходе имеем данные по общим ошибкам в системе Эфор.
     Наследуется объект RequestServer
     '''
-    def __init__(self):
+    def __init__(
+        self,
+        state
+    ):
         super().__init__()
-        self.state = asyncio.run(
-            self.basic_request(
-                path = PATH['state'],
-                action = ACTION['read']
-            )
-        )
+        self.state: Coroutine = state
 
     async def get_params_automat_ERROR(self) -> list:
         '''
