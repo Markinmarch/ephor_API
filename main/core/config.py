@@ -15,9 +15,9 @@ LOGIN = os.getenv('LOGIN', '')
 
 PASSWORD = os.getenv('PASSWORD', '')
 
-CHANNEL_ID = os.getenv('CHANNEL_ID', '')
-
 BOT_TOKEN = os.getenv('BOT_TOKEN', '')
+
+CHANNEL_ID = -1001897240872
 
 URL = 'https://erp.ephor.online'
 
