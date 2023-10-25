@@ -2,7 +2,9 @@
 import asyncio
 import aiohttp
 from typing import Callable
+from aiogram.client.session.aiohttp import AiohttpSession
 
+session = AiohttpSession().api.api_url()
 
 from main.request_ephor.session import Session
 from main.core.config import ACTION
