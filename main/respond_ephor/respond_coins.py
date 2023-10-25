@@ -30,7 +30,7 @@ class RespondCoinsCount(RequestsServer):
         на размен осталось меньше 550 рублей
         '''
         automats_COINS = [param for param in self.coins['data'] if param['model_name'] != 'Coffeemar G-23' and param['automat_state'] == STATE['ok']]
-        get_few_coins_automat = [param for param in automats_COINS if param['now_tube_val'] <= 550]
+        get_few_coins_automat = [param for param in automats_COINS if param['tube_value'] <= 550]
         return get_few_coins_automat
         
     @property
