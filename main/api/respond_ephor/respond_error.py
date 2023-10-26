@@ -1,16 +1,15 @@
 import datetime
 import json
 import logging
-import asyncio
 from typing import Coroutine
 
 
 from main.core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
-from main.api.request_ephor.request_to_server import RequestsServer
 from main.api.respond_ephor.send_error import send_message
+from main.api.request_ephor import ephor_requset
 
 
-class RespondError(RequestsServer):
+class RespondError():
     '''
     Объект осуществляет получение и обработку данных 
     после GET-запроса на сервер в понятный читабельный вид.
@@ -19,10 +18,10 @@ class RespondError(RequestsServer):
     '''
     def __init__(
         self,
-        state
+        requset
     ):
         super().__init__()
-        self.state: Coroutine = state
+        self.request: Coroutine = requset
 
     async def get_params_automat_ERROR(self) -> list:
         '''
@@ -31,8 +30,8 @@ class RespondError(RequestsServer):
         STATE["error"], равный нулю (0). Таким образом мы получаем список данных
         с автоматами, которые находятся в ошибке.
         '''
-        automats_ERROR = [param for param in self.state['data'] if param['automat_state'] == STATE['error']]
-        return await automats_ERROR
+        automats_ERROR = [param for param in self.request['data'] if param['automat_state'] == STATE['error']]
+        return automats_ERROR
 
     async def comparison_error_ids(self) -> list:
         '''
@@ -87,14 +86,12 @@ class RespondError(RequestsServer):
         '''
         error_descriptions = []
         async for params in self.get_params():
-            get_error = asyncio.run(
-                self.request_params(
-                    PATH['error'],
-                    ACTION['read'],
-                    FILTER['automat'],
-                    params['id']
+            get_error = ephor_requset.request_params(
+                PATH['error'],
+                ACTION['read'],
+                FILTER['automat'],
+                params['id']
                 )
-            )
             async for error in await get_error['data']:
                 error_descriptions.append({'error': error['description']})
         return await error_descriptions
@@ -143,6 +140,7 @@ class RespondError(RequestsServer):
                     f'{error_automat["error"]}'
                     ),
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
+                print(message)
                 # send_message(message)
         except TypeError:
             return None

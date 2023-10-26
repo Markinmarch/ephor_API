@@ -42,10 +42,11 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    
     from main.api.request_ephor import basic_request
+    from main.api.respond_ephor.respond_error import RespondError
 
-    print(basic_request)
+    respond = RespondError(basic_request)
+    print(asyncio.run(respond.send_errors()))
 
     # from main.api import respond_ephor
     # while True:

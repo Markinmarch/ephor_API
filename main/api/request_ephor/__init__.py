@@ -14,15 +14,7 @@ disconnection = asyncio.run(Session().logout())
 ephor_requset = RequestsServer(connection=connection, disconnection=disconnection)
 
 basic_request = asyncio.run(
-    RequestsServer(
-        connection=connection,
-        disconnection=disconnection
-        ).basic_request(
-            path = PATH['state'], action = ACTION['read'])
-            )
-
-requset_params = asyncio.run(
-    RequestsServer(
-
+    ephor_requset.basic_request(
+        path = PATH['state'], action = ACTION['read']
     )
 )
