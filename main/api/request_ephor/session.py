@@ -2,7 +2,7 @@ import time
 import aiohttp
 
 
-from main.core.config import URL, PATH, LOGIN, PASSWORD
+from main.core.config import URL, PATH, LOGIN, PASSWORD, ACTION
 
 
 class Session:
@@ -47,7 +47,7 @@ class Session:
             }
         self.headers: dict = {'Content-Type': 'application/json'}
 
-    async def login(self, action) -> str:
+    async def login(self) -> str:
         '''
         Метод отправляет POST-запрос на сервер; в ответ
         получает параметр PHPSESSIONID для дальнейшей
@@ -63,13 +63,13 @@ class Session:
                 json = self.json,
                 headers = self.headers,
                 params = {
-                    'action': action,
+                    'action': ACTION['login'],
                     '_dc': self.id_request
                 }
             ) as respond:
-                return await respond.headers.get('Set-Cookie').split('; ')[0]
+                return respond.headers.get('Set-Cookie').split('; ')[0]
 
-    async def logout(self, action) -> int:
+    async def logout(self) -> int:
         '''
         Метод отправляет POST-запрос на сервер; 
         Выполняется закрытие сесси и выход пользователя
@@ -84,8 +84,8 @@ class Session:
                 json = self.json,
                 headers = self.headers,
                 params = {
-                    'action': action,
+                    'action': ACTION['logout'],
                     '_dc': self.id_request
                 }
             ) as respond:
-                return await respond.status     
+                return respond.status     

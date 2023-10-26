@@ -41,17 +41,21 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def main():
+def main():
     
-    from main.api import respond_ephor
-    while True:
-        # try:
-        asyncio.run(respond_ephor._get_respond_error.send_errors())
-            # respond_ephor.respond_coins.RespondCoinsCount().send_coins_count
-            # respond_ephor.signal_appeared.StatusSignalOK().send_signal_appeared
-            # respond_ephor.respond_no_signal.RespondErrorSignal().send_signal_error
-        await asyncio.sleep(60)
-        # except:
-            # logging.info('--- Server or web has been breack, please whait to connect ---')
-            # time.sleep(180)
-            # continue
+    from main.api.request_ephor import basic_request
+
+    print(basic_request)
+
+    # from main.api import respond_ephor
+    # while True:
+    #     # try:
+    #     asyncio.run(respond_ephor._get_respond_error.send_errors())
+    #         # respond_ephor.respond_coins.RespondCoinsCount().send_coins_count
+    #         # respond_ephor.signal_appeared.StatusSignalOK().send_signal_appeared
+    #         # respond_ephor.respond_no_signal.RespondErrorSignal().send_signal_error
+    #     # await asyncio.sleep(60)
+    #     # except:
+    #         # logging.info('--- Server or web has been breack, please whait to connect ---')
+    #         # time.sleep(180)
+    #         # continue

@@ -3,12 +3,26 @@ import asyncio
 
 from . import session
 from . import request_to_server
+from . session import Session
+from . request_to_server import RequestsServer
+from main.core.config import PATH, ACTION, FILTER
 
 
-from main.core.config import ACTION
+connection = asyncio.run(Session().login())
+disconnection = asyncio.run(Session().logout())
 
-async def huef():
-    _get_request = request_to_server.RequestsServer(
-        await asyncio.run(session.Session().login(action = ACTION['login'])),
-        await asyncio.run(session.Session().logout(action = ACTION['logout']))
+ephor_requset = RequestsServer(connection=connection, disconnection=disconnection)
+
+basic_request = asyncio.run(
+    RequestsServer(
+        connection=connection,
+        disconnection=disconnection
+        ).basic_request(
+            path = PATH['state'], action = ACTION['read'])
+            )
+
+requset_params = asyncio.run(
+    RequestsServer(
+
     )
+)
