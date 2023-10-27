@@ -6,7 +6,7 @@ import asyncio
 from main.core.setting import bot, dp
 from main.core.config import TG_ROUTERS
 from main.tg_bot.utils.keyboards.inline import take_task
-from main.api.respond_ephor import stts
+# from main.api.respond_ephor import check_errors
 
 
 # async def send_msg(
@@ -19,9 +19,9 @@ from main.api.respond_ephor import stts
 #         reply_markup = take_task
 #     )
 
-@dp.message(Command('test'))
+# @dp.message(Command('test'))
 async def send_msg(
-        msg: str = stts,
+        msg: str,
         router: int = 2
 ) -> None:
     await bot.send_message(
