@@ -1,8 +1,8 @@
 from aiogram import types, F
 
 
-from main.core.setting import dp 
-from main.tg_bot.utils.keyboards.inline import ready_task
+from ephor_tg_bot.core.setting import dp 
+from ephor_tg_bot.utils.keyboards.inline import ready_task
 
 
 @dp.callback_query(F.data == 'take_task')

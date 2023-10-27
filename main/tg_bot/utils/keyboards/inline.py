@@ -1,5 +1,5 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from main.core.config import BOT_URL
+from ephor_tg_bot.core.config import BOT_URL
 
 
 authorization_button = InlineKeyboardMarkup(

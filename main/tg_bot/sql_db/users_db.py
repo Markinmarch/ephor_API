@@ -1,7 +1,7 @@
 import logging
 
 
-from main.tg_bot.sql_db.bot_tables import Bot_tables_DB
+from ephor_tg_bot.sql_db.bot_tables import Bot_tables_DB
 
 
 class Users(Bot_tables_DB):
