@@ -3,10 +3,10 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 
 
-from ephor_tg_bot.core.setting import dp
-from ephor_tg_bot.sql_db.users_db import users
-from ephor_tg_bot.utils.commands import set_commands
-from ephor_tg_bot.utils.state import UserForm
+from main.core.setting import dp
+from main.tg_bot.sql_db.users_db import users
+from main.tg_bot.utils.commands import set_commands
+from main.tg_bot.utils.state import UserForm
 
 
 @dp.message(CommandStart())

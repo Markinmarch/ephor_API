@@ -2,8 +2,8 @@ from aiogram import types, F
 from aiogram.fsm.context import FSMContext
 
 
-from ephor_tg_bot.core.setting import dp 
-from ephor_tg_bot.utils.state import TasksForm
+from main.core.setting import dp 
+from main.tg_bot.utils.state import TasksForm
 
 
 @dp.message(TasksForm.route)
