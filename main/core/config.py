@@ -29,7 +29,7 @@ ADMIN_IDS = [
     805875522
 ]
 
-DB_PATH = 'ephor_tg_bot/sql_db'
+DB_PATH = 'main/tg_bot/sql_db'
 
 DB_NAME = 'ephor_API'
 

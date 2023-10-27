@@ -3,7 +3,7 @@ import logging
 import sqlite3
 
 
-from ephor_tg_bot.core.config import DB_NAME, DB_PATH
+from main.core.config import DB_NAME, DB_PATH
 
 
 class Bot_tables_DB:
@@ -79,7 +79,7 @@ def create_table() -> None:
     logging.info('--- Database for "SevCoffeeService BOT" has been created ---')
 
 
-if 'ephor_API' + '.db' not in os.listdir('ephor_tg_bot/sql_db'):
+if 'ephor_API' + '.db' not in os.listdir('main/tg_bot/sql_db'):
     create_table()
 else:
     logging.info('--- Database for "SevCoffeeService" connection established ---')

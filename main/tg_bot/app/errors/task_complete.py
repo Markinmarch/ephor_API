@@ -1,8 +1,8 @@
 from aiogram import types, F
 
 
-from ephor_tg_bot.core.setting import dp 
-from ephor_tg_bot.core.config import TG_ROUTERS
+from main.core.setting import dp 
+from main.core.config import TG_ROUTERS
 
 
 @dp.callback_query(F.data == 'ready_task')

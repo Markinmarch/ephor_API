@@ -1,9 +1,9 @@
 from aiogram import types, F
 
 
-from ephor_tg_bot.core.setting import dp
-from ephor_tg_bot.sql_db.users_db import users
-from ephor_tg_bot.utils.state import UserForm
+from main.core.setting import dp
+from main.tg_bot.sql_db.users_db import users
+from main.tg_bot.utils.state import UserForm
 
 
 @dp.message(UserForm.name)
