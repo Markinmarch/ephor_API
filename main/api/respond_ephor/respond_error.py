@@ -140,7 +140,6 @@ class RespondError():
                     error_automat["error"]
                 )
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
-                # return message
                 await send_msg(message)
         except TypeError:
             None
