@@ -1,11 +1,11 @@
 import asyncio
-
+# 
 
 from . import session
 from . import request_to_server
 from . session import Session
 from . request_to_server import RequestsServer
-from main.core.config import PATH, ACTION, FILTER
+from main.core.config import PATH, ACTION
 
 
 connection = asyncio.run(Session().login())
