@@ -34,10 +34,10 @@ dp = Dispatcher()
 def main_bot() -> None:
     asyncio.run(dp.start_polling(bot))
 
-def main_api() -> None:
+# def main_api() -> None:
 
-    respond = RespondError(basic_request)
+#     respond = RespondError(basic_request)
     
-    while True:
-        asyncio.run(respond.send_errors())
-        time.sleep(30)
+#     while True:
+#         asyncio.run(respond.send_errors())
+#         time.sleep(30)
