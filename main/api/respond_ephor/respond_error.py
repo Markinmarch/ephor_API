@@ -30,7 +30,7 @@ class RespondError():
         STATE["error"], равный нулю (0). Таким образом мы получаем список данных
         с автоматами, которые находятся в ошибке.
         '''
-        return [param for param in self.request['data'] if param['automat_state'] == STATE['error']]
+        return [param for param in await self.request['data'] if param['automat_state'] == STATE['error']]
 
     async def comparison_error_ids(self) -> list:
         '''
@@ -142,7 +142,7 @@ class RespondError():
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
                 await send_msg(message)
         except TypeError:
-            None
+            return None
         ids_automat_ERROR = [ids['automat_id'] for ids in await self.get_params_automat_ERROR()]
         with open(
             file = 'main/api/respond_ephor/ids_errors/errors_id.json',
