@@ -27,21 +27,19 @@ dp = Dispatcher()
 
 
 #main func
-def main_bot() -> None:
-    asyncio.run(dp.start_polling(bot))
+async def main_bot() -> None:
+    logging.info('--- Telegram BOT has been started ---')
+    await dp.start_polling(bot)
 
-def main_api():
+async def main_api() -> None:
+    logging.info('--- Ephor API has been started ---')
     from main.api.request_ephor import basic_request
     from main.api.respond_ephor.respond_error import RespondError
-
+    
     respond = RespondError(basic_request)
-    asyncio.run(respond.send_errors())
-    logging.info('123')
-
     while True:
-        try:
-            asyncio.run(respond.send_errors())
-            time.sleep(40)
-        except:
-            time.sleep(60)
-            continue
+        await respond.send_errors()
+        await asyncio.sleep(30)
+
+async def main() -> None:
+    await asyncio.gather(main_bot(), main_api())
