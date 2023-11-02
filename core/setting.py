@@ -33,7 +33,7 @@ async def main_bot() -> None:
 
 async def main_api() -> None:
     logging.info('--- Ephor API has been started ---')
-    from main_api.request_ephor import basic_request, ephor_requset
+    from main_api.request_ephor import basic_request
     from main_api.respond_ephor.respond_error import RespondError
     from main_api.respond_ephor.respond_coins import RespondCoinsCount
     
@@ -44,7 +44,7 @@ async def main_api() -> None:
         try:
             await respond_error.send_errors()
             await respond_coins.send_coins_count()
-            await asyncio.sleep(30)
+            await asyncio.sleep(60)
         except:
             time.sleep(120)
             continue

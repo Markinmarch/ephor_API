@@ -90,7 +90,7 @@ class RespondCoinsCount():
             )
             logging.warning(f'Автомат № {error_automat["id"]}: {error_automat["error"]}')
             await send_msg(message)
-        ids_automat_COINS =  [ids['automat_id'] for ids in await self.get_automat_COINS()]
+        ids_automat_COINS = [ids['automat_id'] for ids in await self.get_automat_COINS()]
         with open(
             file = 'main_api/respond_ephor/ids_errors/coins_ids.json',
             mode = 'w+'
