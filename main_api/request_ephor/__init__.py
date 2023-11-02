@@ -15,6 +15,7 @@ ephor_requset = RequestsServer(connection=connection, disconnection=disconnectio
 
 basic_request = asyncio.run(
     ephor_requset.basic_request(
-        path = PATH['state'], action = ACTION['read']
+        path = PATH['state'],
+        action = ACTION['read']
     )
 )
