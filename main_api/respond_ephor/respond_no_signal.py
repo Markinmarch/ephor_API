@@ -85,15 +85,15 @@ class RespondErrorSignal():
         '''
         now_hour = datetime.datetime.now().hour
         if 8 <= now_hour < 20:
-            for error_automat in await self.get_params():
+            for signal_error in await self.get_params():
                 message = 'Автомат № {0}\n{1}\n{2} --> {3}\n{4}'.format(
-                    error_automat["id"],
-                    error_automat["adress"],
-                    error_automat["point"],
-                    error_automat["name"],
-                    error_automat["error"]
+                    signal_error["id"],
+                    signal_error["adress"],
+                    signal_error["point"],
+                    signal_error["name"],
+                    signal_error["error"]
                 )
-                logging.warning(f'Автомат № {error_automat["id"]}: {error_automat["error"]}')
+                logging.warning(f'Автомат № {signal_error["id"]}: {signal_error["error"]}')
                 await send_msg(message)
             ids_automat_NO_SIGNAL =  [ids['automat_id'] for ids in await self.get_automat_error_SIGNAL()]
             with open(

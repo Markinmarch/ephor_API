@@ -5,7 +5,7 @@ from typing import Any
 
 
 from main_api.respond_ephor.respond_no_signal import RespondErrorSignal
-from main_api.respond_ephor.send_error import send_message
+from main_api.respond_ephor.send_error import send_msg
 
 
 class StatusSignalOK(RespondErrorSignal):
@@ -19,8 +19,7 @@ class StatusSignalOK(RespondErrorSignal):
     def __init__(self) -> None:
         super().__init__()
 
-    @property
-    def check_signal(self) -> (list[Any] | None):
+    async def check_signal(self) -> (list[Any] | None):
         '''
         Сначала метод проверяет диапазон времени для отправки этой ошибки, затем
         метод считывает идентификаторы (id) автоматов из файла "signal_error_ids.json" 
@@ -30,35 +29,29 @@ class StatusSignalOK(RespondErrorSignal):
         тогда при отсутствии идентификаторов из старого списка в запрошенном - возвращает
         идентификаторы, которые отсутствуют в новом списке идентификаторов.
         '''
-        now_hour = datetime.datetime.now().hour
-        if 8 <= now_hour < 20:
-            try:
-                with open(
-                    file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
-                    mode = 'r'
-                ) as file:
-                    old_ids = json.load(file)
-                signal_error_ids = [ids['automat_id'] for ids in self.get_automat_error_SIGNAL]
-                comparison_list = [ids for ids in old_ids if ids not in signal_error_ids]
-                return comparison_list
-            except FileNotFoundError:
-                return None
-        else:
+        try:
+            with open(
+                file = 'main/respond_ephor/ids_errors/signal_error_ids.json',
+                mode = 'r'
+            ) as file:
+                old_ids = json.load(file)
+            signal_error_ids = [ids['automat_id'] for ids in await self.get_automat_error_SIGNAL()]
+            comparison_list = [ids for ids in old_ids if ids not in signal_error_ids]
+            return comparison_list
+        except FileNotFoundError:
             None
             
-    @property
-    def get_appeared_signal_automat(self) -> (list[Any] | None):
+    async def get_appeared_signal_automat(self) -> (list[Any] | None):
         '''
         Из метода "check_signal" получает идентификаторы и по ним
         получает параметры автоматов, которые вышли на связь.
         '''
         try:
-            return [param for param in self.signal['data'] if param['automat_id'] in self.check_signal]
+            return [param for param in self.request_signal_errors['data'] if param['automat_id'] in await self.check_signal()]
         except TypeError:
-            return None
+            None
         
-    @property
-    def get_signal_appeared(self) -> list:
+    async def get_signal_appeared(self) -> list:
         '''
         Метод выборочно отбирает параметры каждого автомата из списка,
         полученного от метода "get_appeared_signal_automat" и присваивает им
@@ -66,7 +59,7 @@ class StatusSignalOK(RespondErrorSignal):
         каждому автомату, который вышел на связь.
         '''
         signal_appeared_list = []
-        for params in self.get_appeared_signal_automat:
+        for params in await self.get_appeared_signal_automat():
             automat_param = {
                 'id': params['automat_id'],
                 'model': params['model_name'],
@@ -78,22 +71,26 @@ class StatusSignalOK(RespondErrorSignal):
             signal_appeared_list.append(automat_param)
         return signal_appeared_list
 
-    @property
-    def send_signal_appeared(self) -> None:
+    async def send_signal_appeared(self) -> None:
         '''
         Метод формирует тесктовое сообщение для отправки через
         метод "send_message" в телеграм-канал и реализует вывод
         лога в терминал.
         '''
-        if self.get_appeared_signal_automat == None:
-            return None
+        now_hour = datetime.datetime.now().hour
+        if 8 <= now_hour < 20:
+            if await self.get_appeared_signal_automat() == None:
+                None
+            else:
+                for param in await self.get_signal_appeared():
+                    message = 'Автомат № {0}\n{1}\n{2} --> {3}\n{4}'.format(
+                        param["id"],
+                        param["adress"],
+                        param["point"],
+                        param["name"],
+                        param["error"]
+                    )
+                    logging.info(f'Автомат № {param["id"]}: {param["info"]}')
+                    send_msg(message)
         else:
-            for param in self.get_signal_appeared:
-                message = (
-                    f'Автомат № {param["id"]}\n'
-                    f'{param["adress"]}\n'
-                    f'{param["point"]} --> {param["name"]}\n'
-                    f'{param["info"]}'
-                    ),
-                logging.info(f'Автомат № {param["id"]}: {param["info"]}')
-                send_message(message)
+            None
