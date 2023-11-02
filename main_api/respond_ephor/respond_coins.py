@@ -28,8 +28,12 @@ class RespondCoinsCount():
         и на выходе получаем данные автоматов у которых
         на размен осталось меньше 550 рублей
         '''
-        automats_COINS = [param for param in self.request_coins_count['data'] if param['model_name'] != 'Coffeemar G-23' and param['now_tube_val'] <= 550 and param['automat_state'] == STATE['ok']]
-        return automats_COINS
+        return [
+            param for param in self.request_coins_count['data']
+            if param['model_name'] != 'Coffeemar G-23'
+            and param['now_tube_val'] <= 550
+            and param['automat_state'] == STATE['ok']
+        ]
 
     async def comparison_coins_ids(self) -> list:
         '''
