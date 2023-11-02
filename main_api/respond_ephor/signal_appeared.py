@@ -45,6 +45,7 @@ class StatusSignalOK(RespondErrorSignal):
                 return None
         else:
             None
+            
     @property
     def get_appeared_signal_automat(self) -> (list[Any] | None):
         '''

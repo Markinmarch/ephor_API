@@ -18,10 +18,10 @@ class RespondError():
     '''
     def __init__(
         self,
-        requset
+        request
     ):
         super().__init__()
-        self.request: Coroutine = requset
+        self.request_errors: Coroutine = request
 
     async def get_params_automat_ERROR(self) -> list:
         '''
@@ -30,7 +30,7 @@ class RespondError():
         STATE["error"], равный нулю (0). Таким образом мы получаем список данных
         с автоматами, которые находятся в ошибке.
         '''
-        return [param for param in await self.request['data'] if param['automat_state'] == STATE['error']]
+        return [param for param in self.request_errors['data'] if param['automat_state'] == STATE['error']]
 
     async def comparison_error_ids(self) -> list:
         '''
@@ -44,7 +44,7 @@ class RespondError():
         '''
         try:
             with open(
-                file = 'main/api/respond_ephor/ids_errors/errors_id.json',
+                file = 'main_api/respond_ephor/ids_errors/errors_id.json',
                 mode = 'r'
             ) as file:
                 old_ids = json.load(file)
@@ -66,7 +66,6 @@ class RespondError():
             automat_param = {
                 # выборочные параметры каждого автомата
                 'id': params['automat_id'],
-                'model': params['model_name'],
                 'adress': params['point_adress'],
                 'point': params['point_comment'],
                 'name': params['point_name']
@@ -142,10 +141,10 @@ class RespondError():
                 logging.warning(f'Автомат № {error_automat["id"]} выпал в ошибку {error_automat["error"]}')
                 await send_msg(message)
         except TypeError:
-            return None
+            None
         ids_automat_ERROR = [ids['automat_id'] for ids in await self.get_params_automat_ERROR()]
         with open(
-            file = 'main/api/respond_ephor/ids_errors/errors_id.json',
+            file = 'main_api/respond_ephor/ids_errors/errors_id.json',
             mode = 'w+'
         ) as file:
             json.dump(ids_automat_ERROR, file) 

@@ -26,7 +26,8 @@ TG_ROUTERS = {
 }
 
 ADMIN_IDS = [
-    805875522
+    805875522,
+    445402077,
 ]
 
 DB_PATH = 'main_bot/sql_db'

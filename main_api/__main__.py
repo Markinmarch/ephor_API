@@ -7,6 +7,7 @@ if __name__ == '__main__':
 
     try:
         from main_api import request_ephor, respond_ephor
+        import core
         asyncio.run(main_api())
 
     except Exception:
