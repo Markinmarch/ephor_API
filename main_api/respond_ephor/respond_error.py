@@ -20,7 +20,6 @@ class RespondError():
         self,
         request
     ):
-        super().__init__()
         self.request_errors: Coroutine = request
 
     async def get_params_automat_ERROR(self) -> list:

@@ -19,7 +19,6 @@ class RespondCoinsCount():
         self,
         request
     ):
-        super().__init__()
         self.request_coins_count: Coroutine = request
 
     async def get_automat_COINS(self) -> list:

@@ -21,7 +21,6 @@ class RespondErrorSignal():
         self,
         request
     ):
-        super().__init__()
         self.request_signal_errors: Coroutine = request
 
     async def get_automat_error_SIGNAL(self) -> list:
