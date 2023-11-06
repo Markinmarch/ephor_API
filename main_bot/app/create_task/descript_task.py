@@ -10,4 +10,7 @@ from main_bot.utils.state import TasksForm
 async def descript_task(message: types.Message, state: FSMContext) -> None:
     await state.update_data(route = int(message.text))
     await state.set_state(TasksForm.task)
-    await message.answer(text = 'Опишите задание 🛠')
+    await message.answer(
+        text = 'Опишите задание 🛠',
+        reply_markup = types.ReplyKeyboardRemove()
+    )
