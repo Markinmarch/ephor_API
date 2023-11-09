@@ -49,7 +49,8 @@ PATH = {
     'automat': '/api/2.0/automat/Automat.php',
     'state': '/api/2.1/report/automat/State.php',
     'error': '/api/2.1/report/automat/Error.php',
-    'coins': '/api/2.1/automat/Device.php'
+    'coins': '/api/2.1/automat/Device.php',
+    'event': '/api/2.1/report/automat/Event.php'
 }
 
 FILTER = {
@@ -59,6 +60,7 @@ FILTER = {
 
 ACTION = {
     'read': 'Read',
+    'read_all': 'ReadAll',
     'login': 'Login',
     'logout': 'Logout',
     'automat_device': 'ReadAutomatDevice'
@@ -74,3 +76,8 @@ ERRORS = [
 SPEC_ERROR = 'Безналичная оплата продукта'
 
 SIGNAL_ERROR = 'Нет связи с автоматом!'
+
+DESCRIPTION = {
+    'open_door': 'Дверь открыта',
+    'close_door': 'Дверь закрыта'
+}

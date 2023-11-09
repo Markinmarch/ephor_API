@@ -1,12 +1,10 @@
 import logging
 import json
-import datetime
 from typing import Coroutine
 
 
-from core.config import STATE, PATH, ACTION, ERRORS, SIGNAL_ERROR
+from core.config import STATE, SIGNAL_ERROR
 from main_api.respond_ephor.send_error import send_msg
-from main_api.request_ephor import ephor_requset
 
 
 class RespondErrorSignal():
@@ -82,23 +80,19 @@ class RespondErrorSignal():
         лога в терминал. Затем идентификаторы автоматов
         перезаписывает в новый файл "signal_error_ids.json"
         '''
-        now_hour = datetime.datetime.now().hour
-        if 8 <= now_hour < 20:
-            for signal_error in await self.get_params():
-                message = 'Автомат № {0}\n{1}\n{2} --> {3}\n{4}'.format(
-                    signal_error["id"],
-                    signal_error["adress"],
-                    signal_error["point"],
-                    signal_error["name"],
-                    signal_error["error"]
-                )
-                logging.warning(f'Автомат № {signal_error["id"]}: {signal_error["error"]}')
-                await send_msg(message)
-            ids_automat_NO_SIGNAL =  [ids['automat_id'] for ids in await self.get_automat_error_SIGNAL()]
-            with open(
-                file = 'main_api/respond_ephor/ids_errors/signal_error_ids.json',
-                mode = 'w+'
-            ) as file:
-                json.dump(ids_automat_NO_SIGNAL, file)
-        else:
-            None
+        for signal_error in await self.get_params():
+            message = 'Автомат № {0}\n{1}\n{2} --> {3}\n{4}'.format(
+                signal_error["id"],
+                signal_error["adress"],
+                signal_error["point"],
+                signal_error["name"],
+                signal_error["error"]
+            )
+            logging.warning(f'Автомат № {signal_error["id"]}: {signal_error["error"]}')
+            await send_msg(message)
+        ids_automat_NO_SIGNAL =  [ids['automat_id'] for ids in await self.get_automat_error_SIGNAL()]
+        with open(
+            file = 'main_api/respond_ephor/ids_errors/signal_error_ids.json',
+            mode = 'w+'
+        ) as file:
+            json.dump(ids_automat_NO_SIGNAL, file)

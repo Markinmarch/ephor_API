@@ -6,7 +6,7 @@ from typing import Any
 
 from main_api.respond_ephor.respond_no_signal import RespondErrorSignal
 from main_api.respond_ephor.send_error import send_msg
-from main_api.request_ephor import basic_request
+from main_api.request_ephor import states_request
 
 
 class StatusSignalOK(RespondErrorSignal):
@@ -18,7 +18,7 @@ class StatusSignalOK(RespondErrorSignal):
     Наследуется объект RespondErrorSignal.
     '''
     def __init__(self) -> None:
-        super().__init__(basic_request)
+        super().__init__(states_request)
 
     async def check_signal(self) -> (list[Any] | None):
         '''
