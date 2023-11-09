@@ -1,7 +1,7 @@
-# from . import respond_error
-# from . import respond_coins
-# from . import respond_no_signal
-# from . import signal_appeared
+from . import respond_error
+from . import respond_coins
+from . import respond_no_signal
+from . import signal_appeared
 from . import door_status
 
 from main_api.request_ephor import states_request, event_request
