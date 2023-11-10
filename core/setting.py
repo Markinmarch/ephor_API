@@ -34,7 +34,7 @@ async def main_api() -> None:
         responder_error,
         responder_coins,
         responder_error_signal,
-        responder_door_status
+        # responder_door_status
     )
 
     logging.info('--- Ephor API has been started ---')
