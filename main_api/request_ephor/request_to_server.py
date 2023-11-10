@@ -2,7 +2,7 @@ import aiohttp
 from typing import Coroutine
 
 
-from main_api.request_ephor.session import Session
+from .session import Session
 
 
 class RequestsServer(Session):

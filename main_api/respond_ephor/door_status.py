@@ -3,8 +3,8 @@ import logging
 from typing import Coroutine
 
 
-from core.config import DESCRIPTION
-from main_api.respond_ephor.send_error import send_msg
+from ...core.config import DESCRIPTION
+from .send_error import send_msg
 
 
 class RespondDoorStatus():

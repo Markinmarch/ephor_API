@@ -4,9 +4,9 @@ import logging
 from typing import Coroutine
 
 
-from core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
-from main_api.respond_ephor.send_error import send_msg
-from main_api.request_ephor import ephor_requset
+from .send_error import send_msg
+from ..request_ephor import ephor_requset
+from ...core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
 
 
 class RespondError():

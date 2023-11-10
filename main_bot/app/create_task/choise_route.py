@@ -3,10 +3,10 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
 
-from core.setting import dp 
-from core.config import TG_ROUTERS
-from main_bot.utils.keyboards.reply import route_number
-from main_bot.utils.state import TasksForm
+from ...utils.keyboards.reply import route_number
+from ...utils.state import TasksForm
+from ....core.setting import dp 
+from ....core.config import TG_ROUTERS
 
 
 @dp.message(Command('create_task'))

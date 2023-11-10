@@ -4,9 +4,9 @@ import datetime
 from typing import Any
 
 
-from main_api.respond_ephor.respond_no_signal import RespondErrorSignal
-from main_api.respond_ephor.send_error import send_msg
-from main_api.request_ephor import states_request
+from .respond_no_signal import RespondErrorSignal
+from .send_error import send_msg
+from ..request_ephor import states_request
 
 
 class StatusSignalOK(RespondErrorSignal):

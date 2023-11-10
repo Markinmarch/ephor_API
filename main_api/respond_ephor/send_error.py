@@ -1,6 +1,6 @@
-from core.setting import bot
-from core.config import TG_ROUTERS
-from main_bot.utils.keyboards.inline import take_task
+from ...core.setting import bot
+from ...core.config import TG_ROUTERS
+from ...main_bot.utils.keyboards.inline import take_task
 
 
 async def send_msg(

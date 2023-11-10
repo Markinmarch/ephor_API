@@ -1,8 +1,8 @@
 from aiogram import types, F
 
 
-from core.setting import dp 
-from core.config import TG_ROUTERS
+from ....core.setting import dp 
+from ....core.config import TG_ROUTERS
 
 
 @dp.callback_query(F.data == 'ready_task')

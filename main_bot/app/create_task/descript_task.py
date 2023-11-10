@@ -2,8 +2,8 @@ from aiogram import types, F
 from aiogram.fsm.context import FSMContext
 
 
-from core.setting import dp 
-from main_bot.utils.state import TasksForm
+from ...utils.state import TasksForm
+from ....core.setting import dp 
 
 
 @dp.message(TasksForm.route)

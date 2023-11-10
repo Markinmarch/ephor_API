@@ -1,9 +1,9 @@
 from aiogram import types, F
 
 
-from core.setting import dp
-from main_bot.sql_db.users_db import users
-from main_bot.utils.state import UserForm
+from ...sql_db.users_db import users
+from ...utils.state import UserForm
+from ....core.setting import dp
 
 
 @dp.message(UserForm.name)

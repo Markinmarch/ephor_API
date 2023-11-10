@@ -3,8 +3,8 @@ import json
 from typing import Coroutine
 
 
-from core.config import STATE, SIGNAL_ERROR
-from main_api.respond_ephor.send_error import send_msg
+from .send_error import send_msg
+from ...core.config import STATE, SIGNAL_ERROR
 
 
 class RespondErrorSignal():

@@ -1,4 +1,3 @@
-import logging
 import asyncio
 from core.setting import logger, main_api
 

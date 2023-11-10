@@ -2,11 +2,11 @@ from aiogram import types, F
 from aiogram.fsm.context import FSMContext
 
 
-from core.setting import dp 
-from core.config import TG_ROUTERS
-from main_bot.utils.state import TasksForm
-from main_bot.sql_db.users_db import users
-from main_bot.utils.keyboards.inline import take_task
+from ...utils.state import TasksForm
+from ...sql_db.users_db import users
+from ...utils.keyboards.inline import take_task
+from ....core.setting import dp 
+from ....core.config import TG_ROUTERS
 
 
 @dp.message(TasksForm.task)

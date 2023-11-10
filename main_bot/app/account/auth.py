@@ -3,10 +3,10 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 
 
-from core.setting import dp
-from main_bot.sql_db.users_db import users
-from main_bot.utils.commands import set_commands
-from main_bot.utils.state import UserForm
+from ...sql_db.users_db import users
+from ...utils.commands import set_commands
+from ...utils.state import UserForm
+from ....core.setting import dp
 
 
 @dp.message(CommandStart())

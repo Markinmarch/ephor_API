@@ -3,7 +3,7 @@ from aiogram.types import BotCommand, BotCommandScopeDefault, BotCommandScopeCha
 
 
 # from ephor_tg_bot.core.config import CHANNEL_ID
-from core.config import ADMIN_IDS, BOT_URL
+from ...core.config import ADMIN_IDS, BOT_URL
 
 
 user_commands = [
