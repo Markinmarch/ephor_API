@@ -3,7 +3,7 @@ import logging
 from typing import Coroutine
 
 
-from ...core.config import DESCRIPTION
+from core.config import DESCRIPTION
 from .send_error import send_msg
 
 

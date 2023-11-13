@@ -1,3 +1,17 @@
+'''
+Модуль получения сформированных данных после запроса с сервера.
+    Параметры:
+        responder_error: Object
+            объект полученния отвта об ошибках автоматов
+        responder_coins: Object
+            объект получения ответа о малом количестве монет в тубах монетоприёмника
+        responder_error_signal: Object
+            объект получения ответа в случае отсутствия связи с автоматом
+        appeared_signal: Object
+            объект получения ответа в случае, если автомат вышел на связь
+'''
+
+
 from . import respond_error
 from . import respond_coins
 from . import respond_no_signal

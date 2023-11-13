@@ -3,7 +3,7 @@ import logging
 import sqlite3
 
 
-from ...core.config import DB_NAME, DB_PATH
+from core.config import DB_NAME, DB_PATH
 
 
 class Bot_tables_DB:

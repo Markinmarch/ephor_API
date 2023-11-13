@@ -4,7 +4,7 @@ from typing import Coroutine
 
 
 from .send_error import send_msg
-from ...core.config import STATE, SIGNAL_ERROR
+from core.config import STATE, SIGNAL_ERROR
 
 
 class RespondErrorSignal():
@@ -14,6 +14,9 @@ class RespondErrorSignal():
     GET-запроса. На выходе имеем данные по автоматам,
     у которых пропал сигнал.
     Наследуется объект RequestServer.
+        Параметры:
+            request: Сourutine
+                запрос данных с сервера
     '''
     def __init__(
         self,

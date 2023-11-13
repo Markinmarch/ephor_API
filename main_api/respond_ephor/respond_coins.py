@@ -3,7 +3,7 @@ import json
 from typing import Coroutine
 
 
-from ...core.config import STATE
+from core.config import STATE
 from .send_error import send_msg
 
 
@@ -14,6 +14,9 @@ class RespondCoinsCount():
     GET-запроса. На выходе имеем данные по автоматам,
     у которых в аппарате для размена в тубах осталось
     меньше 550 рублей. Наследуется объект RequestServer.
+        Параметры:
+            request: Сourutine
+                запрос данных с сервера
     '''
     def __init__(
         self,

@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from ....core.config import BOT_URL
+from core.config import BOT_URL
 
 
 authorization_button = InlineKeyboardMarkup(

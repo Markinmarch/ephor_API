@@ -2,7 +2,7 @@ import time
 import aiohttp
 
 
-from ...core.config import URL, PATH, LOGIN, PASSWORD, ACTION
+from core.config import URL, PATH, LOGIN, PASSWORD, ACTION
 
 
 class Session:

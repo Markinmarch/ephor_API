@@ -6,7 +6,7 @@ from typing import Coroutine
 
 from .send_error import send_msg
 from ..request_ephor import ephor_requset
-from ...core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
+from core.config import STATE, PATH, ACTION, FILTER, ERRORS, SPEC_ERROR
 
 
 class RespondError():
@@ -15,6 +15,9 @@ class RespondError():
     после GET-запроса на сервер в понятный читабельный вид.
     На выходе имеем данные по общим ошибкам в системе Эфор.
     Наследуется объект RequestServer
+        Параметры:
+            request: Сourutine
+                запрос данных с сервера
     '''
     def __init__(
         self,
