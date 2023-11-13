@@ -78,20 +78,16 @@ class StatusSignalOK(RespondErrorSignal):
         метод "send_message" в телеграм-канал и реализует вывод
         лога в терминал.
         '''
-        now_hour = datetime.datetime.now().hour
-        if 8 <= now_hour < 20:
-            if await self.get_appeared_signal_automat() == None:
-                None
-            else:
-                for param in await self.get_signal_appeared():
-                    message = 'Автомат № {0}\n{1}\n{2} --> {3}\n{4}'.format(
-                        param["id"],
-                        param["adress"],
-                        param["point"],
-                        param["name"],
-                        param["error"]
-                    )
-                    logging.info(f'Автомат № {param["id"]}: {param["info"]}')
-                    send_msg(message)
-        else:
+        if await self.get_appeared_signal_automat() == None:
             None
+        else:
+            for param in await self.get_signal_appeared():
+                message = 'Автомат № {0}\n{1}\n{2} --> {3}\n{4}'.format(
+                    param["id"],
+                    param["adress"],
+                    param["point"],
+                    param["name"],
+                    param["error"]
+                )
+                logging.info(f'Автомат № {param["id"]}: {param["info"]}')
+                send_msg(message)

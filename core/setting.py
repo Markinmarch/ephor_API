@@ -43,8 +43,8 @@ async def main_api() -> None:
             now_hour = datetime.datetime.now().hour
             await responder_error.send_errors()
             await responder_coins.send_coins_count()
-            await appeared_signal.send_signal_appeared()
             if 8 <= now_hour <= 21:
+                await appeared_signal.send_signal_appeared()
                 await responder_error_signal.send_signal_error()
             # if 8 > now_hour >= 21:
             #     await responder_door_status.send_door_status()
