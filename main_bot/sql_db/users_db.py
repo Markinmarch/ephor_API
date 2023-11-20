@@ -80,6 +80,3 @@ class Users(Bot_tables_DB):
         )
         self.conn.commit()
         logging.info(f'User {user_id} deleted')
-
-
-users = Users()

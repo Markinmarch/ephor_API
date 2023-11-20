@@ -1,7 +1,7 @@
 from aiogram import types, F
 
 
-from ...sql_db.users_db import users
+from ...sql_db import users
 from ...utils.state import UserForm
 from core.setting import dp
 

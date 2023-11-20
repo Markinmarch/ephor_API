@@ -34,19 +34,21 @@ class Bot_tables_DB:
         self.conn.commit()
         logging.info('--- Table "USERS" has been created ---')
 
-    def create_posts_table(self) -> None:
+    def create_tasks_table(self) -> None:
         self.conn
         self.cur.execute(
             '''
-            CREATE TABLE if NOT EXISTS posts(
-                id INTEGER PRIMARY KEY,
+            CREATE TABLE if NOT EXISTS tasks(
+                msg_id INTEGER NOT NULL,
+                child_msg_id INTEGER NOT NULL,
+                chat_id INTEGET NOT NULL,
                 user_id INTEGER NOT NULL,
                 FOREIGN KEY (user_id) REFERENCES users(id)
             );            
             '''
         )
         self.conn.commit()
-        logging.info('--- Table "POSTS" has been created ---')
+        logging.info('--- Table "TASKS" has been created ---')
 
     def drop_posts_table(self) -> None:
         self.cur.execute(
@@ -74,7 +76,7 @@ class Bot_tables_DB:
 def create_table() -> None:
     DB_tables = Bot_tables_DB()
     DB_tables.create_users_table()
-    # DB_tables.create_posts_table()
+    DB_tables.create_tasks_table()
     # DB_tables.create_responders_table()
     logging.info('--- Database for "SevCoffeeService BOT" has been created ---')
 

@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 
 
 from ...utils.state import TasksForm
-from ...sql_db.users_db import users
+from ...sql_db import users
 from ...utils.keyboards.inline import take_task
 from core.setting import dp 
 from core.config import TG_ROUTERS

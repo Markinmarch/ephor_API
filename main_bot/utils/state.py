@@ -7,6 +7,3 @@ class UserForm(StatesGroup):
 class TasksForm(StatesGroup):
     route = State()
     task = State()
-
-class InspectionRouts(StatesGroup):
-    user_ids: list = State()

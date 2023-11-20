@@ -3,7 +3,7 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 
 
-from ...sql_db.users_db import users
+from ...sql_db import users
 from ...utils.commands import set_commands
 from ...utils.state import UserForm
 from core.setting import dp
