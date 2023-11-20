@@ -9,9 +9,9 @@ function addName() {
 function handleButtonClick() {
     var textInputName = document.getElementById("userName");
     var userName = textInputName.value;
-    var textInputAge = document.getElementById("userAge");
-    var userAge = textInputAge.value;
-    if (userName == "" || userAge == "") {
+    var integerInputAge = document.getElementById("userAge");
+    var userAge = integerInputAge.value;
+    if (userName == "" || userAge == Number()) {
         alert("Введите параметры, пожалуйста!");
     }
     else {
