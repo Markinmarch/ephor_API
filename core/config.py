@@ -30,7 +30,7 @@ ADMIN_IDS = [
     445402077,
 ]
 
-DB_PATH = 'main_bot/datas'
+DB_PATH = 'datas'
 
 DB_NAME = 'ephor_API'
 

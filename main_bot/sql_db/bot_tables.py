@@ -15,9 +15,13 @@ class Bot_tables_DB:
         :cur: параметр указателя БД
     '''
 
-    def __init__(self):
-        self.name = DB_NAME
-        self.path = DB_PATH
+    def __init__(
+            self,
+            name_DB: str,
+            path_DB: str
+        ):
+        self.name = name_DB
+        self.path = path_DB
         self.conn = sqlite3.connect(f'{self.path}/{self.name}.db')
         self.cur = self.conn.cursor()
 
@@ -72,16 +76,3 @@ class Bot_tables_DB:
         )
         self.conn.commit()
         logging.info('--- Table "RESPONDERS" has been created ---')
-
-def create_table() -> None:
-    DB_tables = Bot_tables_DB()
-    DB_tables.create_users_table()
-    DB_tables.create_tasks_table()
-    # DB_tables.create_responders_table()
-    logging.info('--- Database for "SevCoffeeService BOT" has been created ---')
-
-
-if 'ephor_API' + '.db' not in os.listdir('main_bot/sql_db'):
-    create_table()
-else:
-    logging.info('--- Database for "SevCoffeeService" connection established ---')
